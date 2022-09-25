@@ -80,8 +80,9 @@ shell_version_string ()
 }
 
 void
-show_shell_version (extended)
-     int extended;
+show_shell_version (
+     int extended
+)
 {
   printf (_("GNU bash, version %s (%s)\n"), shell_version_string (), MACHTYPE);
   if (extended)

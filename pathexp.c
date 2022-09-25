@@ -63,8 +63,9 @@ int glob_star = 0;
    it implements the rules in Posix 2.13.3, specifically that an unquoted
    slash cannot appear in a bracket expression. */
 int
-unquoted_glob_pattern_p (string)
-     register char *string;
+unquoted_glob_pattern_p (
+     register char *string
+)
 {
   register int c;
   char *send;
@@ -147,8 +148,9 @@ unquoted_glob_pattern_p (string)
 /* Return 1 if C is a character that is `special' in a POSIX ERE and needs to
    be quoted to match itself. */
 static inline int
-ere_char (c)
-     int c;
+ere_char (
+     int c
+)
 {
   switch (c)
     {
@@ -172,8 +174,9 @@ ere_char (c)
 }
 
 int
-glob_char_p (s)
-     const char *s;
+glob_char_p (
+     const char *s
+)
 {
   switch (*s)
     {
@@ -207,9 +210,10 @@ glob_char_p (s)
    performed.  QGLOB_REGEXP means we're quoting for a Posix ERE (for
    [[ string =~ pat ]]) and that requires some special handling. */
 char *
-quote_string_for_globbing (pathname, qflags)
-     const char *pathname;
-     int qflags;
+quote_string_for_globbing (
+     const char *pathname,
+     int qflags
+)
 {
   char *temp;
   register int i, j;
@@ -381,8 +385,9 @@ endpat:
 }
 
 char *
-quote_globbing_chars (string)
-     const char *string;
+quote_globbing_chars (
+     const char *string
+)
 {
   size_t slen;
   char *temp, *t;
@@ -408,9 +413,10 @@ quote_globbing_chars (string)
 
 /* Call the glob library to do globbing on PATHNAME. */
 char **
-shell_glob_filename (pathname, qflags)
-     const char *pathname;
-     int qflags;
+shell_glob_filename (
+     const char *pathname,
+     int qflags
+)
 {
 #if defined (USE_POSIX_GLOB_LIBRARY)
   register int i;
@@ -502,8 +508,9 @@ static struct ignorevar globignore =
    has changed.  If GLOBIGNORE is being unset, we also need to disable
    the globbing of filenames beginning with a `.'. */
 void
-setup_glob_ignore (name)
-     char *name;
+setup_glob_ignore (
+     char *name
+)
 {
   char *v;
 
@@ -524,8 +531,9 @@ should_ignore_glob_matches ()
 
 /* Return 0 if NAME matches a pattern in the globignore.ignores list. */
 static int
-glob_name_is_acceptable (name)
-     const char *name;
+glob_name_is_acceptable (
+     const char *name
+)
 {
   struct ign *p;
   char *n;
@@ -558,9 +566,10 @@ glob_name_is_acceptable (name)
    be removed from NAMES. */
 
 static void
-ignore_globbed_names (names, name_func)
-     char **names;
-     sh_ignore_func_t *name_func;
+ignore_globbed_names (
+     char **names,
+     sh_ignore_func_t *name_func
+)
 {
   char **newnames;
   int n, i;
@@ -595,8 +604,9 @@ ignore_globbed_names (names, name_func)
 }
 
 void
-ignore_glob_matches (names)
-     char **names;
+ignore_glob_matches (
+     char **names
+)
 {
   if (globignore.num_ignores == 0)
     return;
@@ -605,9 +615,10 @@ ignore_glob_matches (names)
 }
 
 static char *
-split_ignorespec (s, ip)
-     char *s;
-     int *ip;
+split_ignorespec (
+     char *s,
+     int *ip
+)
 {
   char *t;
   int n, i;
@@ -629,8 +640,9 @@ split_ignorespec (s, ip)
 }
   
 void
-setup_ignore_patterns (ivp)
-     struct ignorevar *ivp;
+setup_ignore_patterns (
+     struct ignorevar *ivp
+)
 {
   int numitems, maxitems, ptr;
   char *colon_bit, *this_ignoreval;

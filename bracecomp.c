@@ -45,8 +45,10 @@ static int _strcompare PARAMS((char **, char **));
 
 /* Find greatest common prefix of two strings. */
 static int
-string_gcd (s1, s2)
-     char *s1, *s2;
+string_gcd (
+     char *s1,
+     char *s2
+)
 {
   register int i;
 
@@ -63,9 +65,12 @@ string_gcd (s1, s2)
 }
 
 static char *
-really_munge_braces (array, real_start, real_end, gcd_zero)
-     char **array;
-     int real_start, real_end, gcd_zero;
+really_munge_braces (
+     char **array,
+     int real_start,
+     int real_end,
+     int gcd_zero
+)
 {
   int start, end, gcd;
   char *result, *subterm, *x;
@@ -150,8 +155,10 @@ really_munge_braces (array, real_start, real_end, gcd_zero)
 }
 
 static int
-_strcompare (s1, s2)
-     char **s1, **s2;
+_strcompare (
+     char **s1,
+     char **s2
+)
 {
   int result;
 
@@ -163,8 +170,9 @@ _strcompare (s1, s2)
 }
 
 static int
-hack_braces_completion (names)
-     char **names;
+hack_braces_completion (
+     char **names
+)
 {
   register int i;
   char *temp;
@@ -187,8 +195,10 @@ hack_braces_completion (names)
 /* We handle quoting ourselves within hack_braces_completion, so we turn off
    rl_filename_quoting_desired and rl_filename_quoting_function. */
 int
-bash_brace_completion (count, ignore)
-     int count, ignore;
+bash_brace_completion (
+     int count,
+     int ignore
+)
 {
   rl_compignore_func_t *orig_ignore_func;
   rl_compentry_func_t *orig_entry_func;

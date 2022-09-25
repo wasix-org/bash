@@ -78,8 +78,9 @@ initialize_aliases ()
 /* Scan the list of aliases looking for one with NAME.  Return NULL
    if the alias doesn't exist, else a pointer to the alias_t. */
 alias_t *
-find_alias (name)
-     char *name;
+find_alias (
+     char *name
+)
 {
   BUCKET_CONTENTS *al;
 
@@ -92,8 +93,9 @@ find_alias (name)
 
 /* Return the value of the alias for NAME, or NULL if there is none. */
 char *
-get_alias_value (name)
-     char *name;
+get_alias_value (
+     char *name
+)
 {
   alias_t *alias;
 
@@ -107,8 +109,10 @@ get_alias_value (name)
 /* Make a new alias from NAME and VALUE.  If NAME can be found,
    then replace its value. */
 void
-add_alias (name, value)
-     char *name, *value;
+add_alias (
+     char *name,
+     char *value
+)
 {
   BUCKET_CONTENTS *elt;
   alias_t *temp;
@@ -158,8 +162,9 @@ add_alias (name, value)
 
 /* Delete a single alias structure. */
 static void
-free_alias_data (data)
-     PTR_T data;
+free_alias_data (
+     PTR_T data
+)
 {
   register alias_t *a;
 
@@ -177,8 +182,9 @@ free_alias_data (data)
    the number of aliases left in the table, or -1 if the alias didn't
    exist. */
 int
-remove_alias (name)
-     char *name;
+remove_alias (
+     char *name
+)
 {
   BUCKET_CONTENTS *elt;
 
@@ -217,8 +223,9 @@ delete_all_aliases ()
 /* Return an array of aliases that satisfy the conditions tested by FUNCTION.
    If FUNCTION is NULL, return all aliases. */
 static alias_t **
-map_over_aliases (function)
-     sh_alias_map_func_t *function;
+map_over_aliases (
+     sh_alias_map_func_t *function
+)
 {
   register int i;
   register BUCKET_CONTENTS *tlist;
@@ -247,15 +254,18 @@ map_over_aliases (function)
 }
 
 static void
-sort_aliases (array)
-     alias_t **array;
+sort_aliases (
+     alias_t **array
+)
 {
   qsort (array, strvec_len ((char **)array), sizeof (alias_t *), (QSFUNC *)qsort_alias_compare);
 }
 
 static int
-qsort_alias_compare (as1, as2)
-     alias_t **as1, **as2;
+qsort_alias_compare (
+     alias_t **as1,
+     alias_t **as2
+)
 {
   int result;
 
@@ -281,8 +291,9 @@ all_aliases ()
 }
 
 char *
-alias_expand_word (s)
-     char *s;
+alias_expand_word (
+     char *s
+)
 {
   alias_t *r;
 
@@ -319,9 +330,10 @@ static int command_word;
    backslash-escaped characters. */
 
 static int
-skipquotes (string, start)
-     char *string;
-     int start;
+skipquotes (
+     char *string,
+     int start
+)
 {
   register int i;
   int delimiter = string[start];
@@ -348,9 +360,10 @@ skipquotes (string, start)
    START.  Return the new index into STRING, after zero or more characters
    have been skipped. */
 static int
-skipws (string, start)
-     char *string;
-     int start;
+skipws (
+     char *string,
+     int start
+)
 {
   register int i;
   int pass_next, backslash_quoted_word;
@@ -435,9 +448,10 @@ skipws (string, start)
    skipquotes () for quoted strings in the middle or at the end of tokens,
    so all characters show up (e.g. foo'' and foo""bar) */
 static int
-rd_token (string, start)
-     char *string;
-     int start;
+rd_token (
+     char *string,
+     int start
+)
 {
   register int i;
 
@@ -476,8 +490,9 @@ rd_token (string, start)
 
 /* Return a new line, with any aliases substituted. */
 char *
-alias_expand (string)
-     char *string;
+alias_expand (
+     char *string
+)
 {
   register int i, j, start;
   char *line, *token;

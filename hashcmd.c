@@ -47,8 +47,9 @@ phash_create ()
 }
 
 static void
-phash_freedata (data)
-     PTR_T data;
+phash_freedata (
+     PTR_T data
+)
 {
   free (((PATH_DATA *)data)->path);
   free (data);
@@ -63,8 +64,9 @@ phash_flush ()
 
 /* Remove FILENAME from the table of hashed commands. */
 int
-phash_remove (filename)
-     const char *filename;
+phash_remove (
+     const char *filename
+)
 {
   register BUCKET_CONTENTS *item;
 
@@ -89,9 +91,12 @@ phash_remove (filename)
    in a directory in $PATH that is not an absolute pathname.
    FOUND is the initial value for times_found. */
 void
-phash_insert (filename, full_path, check_dot, found)
-     char *filename, *full_path;
-     int check_dot, found;
+phash_insert (
+     char *filename,
+     char *full_path,
+     int check_dot,
+     int found
+)
 {
   register BUCKET_CONTENTS *item;
 
@@ -124,8 +129,9 @@ phash_insert (filename, full_path, check_dot, found)
    returns a newly-allocated string; the caller is responsible
    for freeing it. */
 char *
-phash_search (filename)
-     const char *filename;
+phash_search (
+     const char *filename
+)
 {
   register BUCKET_CONTENTS *item;
   char *path, *dotted_filename, *tail;

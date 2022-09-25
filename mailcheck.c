@@ -112,8 +112,9 @@ reset_mail_timer ()
 /* Locate a file in the list.  Return index of
    entry, or -1 if not found. */
 static int
-find_mail_file (file)
-     char *file;
+find_mail_file (
+     char *file
+)
 {
   register int i;
 
@@ -144,8 +145,9 @@ find_mail_file (file)
   while (0)
 
 static void
-init_mail_file (i)
-     int i;
+init_mail_file (
+     int i
+)
 {
   mailfiles[i]->access_time = mailfiles[i]->mod_time = last_time_mail_checked ? last_time_mail_checked : shell_start_time;
   mailfiles[i]->file_size = 0;
@@ -153,8 +155,9 @@ init_mail_file (i)
 }
 
 static void
-update_mail_file (i)
-     int i;
+update_mail_file (
+     int i
+)
 {
   char *file;
   struct stat finfo;
@@ -169,8 +172,10 @@ update_mail_file (i)
 /* Add this file to the list of remembered files and return its index
    in the list of mail files. */
 static int
-add_mail_file (file, msg)
-     char *file, *msg;
+add_mail_file (
+     char *file,
+     char *msg
+)
 {
   struct stat finfo;
   char *filename;
@@ -208,8 +213,10 @@ reset_mail_files ()
 }
 
 static FILEINFO *
-alloc_mail_file (filename, msg)
-     char *filename, *msg;
+alloc_mail_file (
+     char *filename,
+     char *msg
+)
 {
   FILEINFO *mf;
 
@@ -222,8 +229,9 @@ alloc_mail_file (filename, msg)
 }
 
 static void
-dispose_mail_file (mf)
-     FILEINFO *mf;
+dispose_mail_file (
+     FILEINFO *mf
+)
 {
   free (mf->name);
   FREE (mf->msg);
@@ -257,8 +265,9 @@ init_mail_dates ()
    accessed since modified.  If the size has dropped to zero, reset
    the cached mail file info. */
 static int
-file_mod_date_changed (i)
-     int i;
+file_mod_date_changed (
+     int i
+)
 {
   time_t mtime;
   struct stat finfo;
@@ -281,8 +290,9 @@ file_mod_date_changed (i)
 
 /* Return non-zero if FILE's access date has changed. */
 static int
-file_access_date_changed (i)
-     int i;
+file_access_date_changed (
+     int i
+)
 {
   time_t atime;
   struct stat finfo;
@@ -302,8 +312,9 @@ file_access_date_changed (i)
 
 /* Return non-zero if FILE's size has increased. */
 static int
-file_has_grown (i)
-     int i;
+file_has_grown (
+     int i
+)
 {
   off_t size;
   struct stat finfo;
@@ -319,8 +330,9 @@ file_has_grown (i)
    the first unquoted `?' or `%' to the end of the string.  This is the
    message to be printed when the file contents change. */
 static char *
-parse_mailpath_spec (str)
-     char *str;
+parse_mailpath_spec (
+     char *str
+)
 {
   char *s;
   int pass_next;

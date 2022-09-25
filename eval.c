@@ -234,8 +234,9 @@ pretty_print_loop ()
 }
 
 static sighandler
-alrm_catcher(i)
-     int i;
+alrm_catcher(
+     int i
+)
 {
   char *msg;
 
@@ -265,9 +266,10 @@ send_pwd_to_eterm ()
 #if defined (ARRAY_VARS)
 /* Caller ensures that A has a non-zero number of elements */
 int
-execute_array_command (a, v)
-     ARRAY *a;
-     void *v;
+execute_array_command (
+     ARRAY *a,
+     void *v
+)
 {
   char *tag;
   char **argv;

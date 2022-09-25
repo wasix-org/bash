@@ -505,7 +505,7 @@ read_builtin (list)
 	  if (i < 0)
 	    sh_ttyerror (1);
 	  tty_modified = 1;
-	  add_unwind_protect ((Function *)ttyrestore, (char *)&termsave);
+	  add_unwind_protect (ttyrestore, (char *)&termsave);
 	  if (interactive_shell == 0)
 	    initialize_terminating_signals ();
 	}
@@ -523,7 +523,7 @@ read_builtin (list)
 	sh_ttyerror (1);
 
       tty_modified = 1;
-      add_unwind_protect ((Function *)ttyrestore, (char *)&termsave);
+      add_unwind_protect (ttyrestore, (char *)&termsave);
       if (interactive_shell == 0)
 	initialize_terminating_signals ();
     }

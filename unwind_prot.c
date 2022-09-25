@@ -79,7 +79,7 @@ typedef union uwp {
 static void without_interrupts PARAMS((VFunction *, char *, char *));
 static void unwind_frame_discard_internal PARAMS((char *, char *));
 static void unwind_frame_run_internal PARAMS((char *, char *));
-static void add_unwind_protect_internal PARAMS((Function *, char *));
+static void add_unwind_protect_internal PARAMS((VFunction *, char *));
 static void remove_unwind_protect_internal PARAMS((char *, char *));
 static void run_unwind_protects_internal PARAMS((char *, char *));
 static void clear_unwind_protects_internal PARAMS((char *, char *));
@@ -110,25 +110,29 @@ uwp_init ()
 /* Run a function without interrupts.  This relies on the fact that the
    FUNCTION cannot call QUIT (). */
 static void
-without_interrupts (function, arg1, arg2)
-     VFunction *function;
-     char *arg1, *arg2;
+without_interrupts (
+     VFunction *function,
+     char *arg1,
+     char *arg2
+)
 {
-  (*function)(arg1, arg2);
+  (*((VFunction2*)function))(arg1, arg2);
 }
 
 /* Start the beginning of a region. */
 void
-begin_unwind_frame (tag)
-     char *tag;
+begin_unwind_frame (
+     char *tag
+)
 {
-  add_unwind_protect ((Function *)NULL, tag);
+  add_unwind_protect ((VFunction *)NULL, tag);
 }
 
 /* Discard the unwind protects back to TAG. */
 void
-discard_unwind_frame (tag)
-     char *tag;
+discard_unwind_frame (
+     char *tag
+)
 {
   if (unwind_protect_list)
     without_interrupts (unwind_frame_discard_internal, tag, (char *)NULL);
@@ -136,8 +140,9 @@ discard_unwind_frame (tag)
 
 /* Run the unwind protects back to TAG. */
 void
-run_unwind_frame (tag)
-     char *tag;
+run_unwind_frame (
+     char *tag
+)
 {
   if (unwind_protect_list)
     without_interrupts (unwind_frame_run_internal, tag, (char *)NULL);
@@ -145,11 +150,12 @@ run_unwind_frame (tag)
 
 /* Add the function CLEANUP with ARG to the list of unwindable things. */
 void
-add_unwind_protect (cleanup, arg)
-     Function *cleanup;
-     char *arg;
+add_unwind_protect (
+     VFunction *cleanup,
+     volatile void *arg
+)
 {
-  without_interrupts (add_unwind_protect_internal, (char *)cleanup, arg);
+  without_interrupts (add_unwind_protect_internal, (char *)cleanup, (char *)arg);
 }
 
 /* Remove the top unwind protect from the list. */
@@ -172,8 +178,9 @@ run_unwind_protects ()
 
 /* Erase the unwind-protect list.  If flags is 1, free the elements. */
 void
-clear_unwind_protect_list (flags)
-     int flags;
+clear_unwind_protect_list (
+     int flags
+)
 {
   char *flag;
 
@@ -192,8 +199,9 @@ have_unwind_protects ()
 }
 
 int
-unwind_protect_tag_on_stack (tag)
-     const char *tag;
+unwind_protect_tag_on_stack (
+     const char *tag
+)
 {
   UNWIND_ELT *elt;
 
@@ -214,22 +222,25 @@ unwind_protect_tag_on_stack (tag)
 /* **************************************************************** */
 
 static void
-add_unwind_protect_internal (cleanup, arg)
-     Function *cleanup;
-     char *arg;
+add_unwind_protect_internal (
+     VFunction *cleanup,
+     char *arg
+)
 {
   UNWIND_ELT *elt;
 
   uwpalloc (elt);
   elt->head.next = unwind_protect_list;
-  elt->head.cleanup = cleanup;
+  elt->head.cleanup = (Function*)cleanup;
   elt->arg.v = arg;
   unwind_protect_list = elt;
 }
 
 static void
-remove_unwind_protect_internal (ignore1, ignore2)
-     char *ignore1, *ignore2;
+remove_unwind_protect_internal (
+     char *ignore1,
+     char *ignore2
+)
 {
   UNWIND_ELT *elt;
 
@@ -242,15 +253,19 @@ remove_unwind_protect_internal (ignore1, ignore2)
 }
 
 static void
-run_unwind_protects_internal (ignore1, ignore2)
-     char *ignore1, *ignore2;
+run_unwind_protects_internal (
+     char *ignore1,
+     char *ignore2
+)
 {
   unwind_frame_run_internal ((char *) NULL, (char *) NULL);
 }
 
 static void
-clear_unwind_protects_internal (flag, ignore)
-     char *flag, *ignore;
+clear_unwind_protects_internal (
+     char *flag,
+     char *ignore
+)
 {
   if (flag)
     {
@@ -261,8 +276,10 @@ clear_unwind_protects_internal (flag, ignore)
 }
 
 static void
-unwind_frame_discard_internal (tag, ignore)
-     char *tag, *ignore;
+unwind_frame_discard_internal (
+     char *tag,
+     char *ignore
+)
 {
   UNWIND_ELT *elt;
   int found;
@@ -289,15 +306,18 @@ unwind_frame_discard_internal (tag, ignore)
    sv->desired_setting is a block of memory SIZE bytes long holding the
    value itself.  This block of memory is copied back into the variable. */
 static inline void
-restore_variable (sv)
-     SAVED_VAR *sv;
+restore_variable (
+     SAVED_VAR *sv
+)
 {
   FASTCOPY (sv->desired_setting, sv->variable, sv->size);
 }
 
 static void
-unwind_frame_run_internal (tag, ignore)
-     char *tag, *ignore;
+unwind_frame_run_internal (
+     char *tag,
+     char *ignore
+)
 {
   UNWIND_ELT *elt;
   int found;
@@ -322,7 +342,7 @@ unwind_frame_run_internal (tag, ignore)
 	  if (elt->head.cleanup == (Function *) restore_variable)
 	    restore_variable (&elt->sv.v);
 	  else
-	    (*(elt->head.cleanup)) (elt->arg.v);
+	    (*((Function1*)elt->head.cleanup)) (elt->arg.v);
 	}
 
       uwpfree (elt);
@@ -332,9 +352,10 @@ unwind_frame_run_internal (tag, ignore)
 }
 
 static void
-unwind_protect_mem_internal (var, psize)
-     char *var;
-     char *psize;
+unwind_protect_mem_internal (
+     char *var,
+     char *psize
+)
 {
   int size, allocated;
   UNWIND_ELT *elt;
@@ -356,9 +377,10 @@ unwind_protect_mem_internal (var, psize)
    are run.  VAR is a pointer to the variable.  SIZE is the size in
    bytes of VAR.  */
 void
-unwind_protect_mem (var, size)
-     char *var;
-     int size;
+unwind_protect_mem (
+     char *var,
+     int size
+)
 {
   without_interrupts (unwind_protect_mem_internal, var, (char *) &size);
 }

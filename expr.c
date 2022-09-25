@@ -319,8 +319,10 @@ expr_unwind ()
 }
 
 static void
-expr_bind_variable (lhs, rhs)
-     char *lhs, *rhs;
+expr_bind_variable (
+     char *lhs,
+     char *rhs
+)
 {
   SHELL_VAR *v;
   int aflags;
@@ -343,8 +345,10 @@ expr_bind_variable (lhs, rhs)
 /* This is similar to the logic in arrayfunc.c:valid_array_subscript when
    you pass VA_NOEXPAND. */
 static int
-expr_skipsubscript (vp, cp)
-     char *vp, *cp;
+expr_skipsubscript (
+     char *vp,
+     char *cp
+)
 {
   int flags, isassoc;
   SHELL_VAR *entry;
@@ -364,10 +368,11 @@ expr_skipsubscript (vp, cp)
 /* Rewrite tok, which is of the form vname[expression], to vname[ind], where
    IND is the already-calculated value of expression. */
 static void
-expr_bind_array_element (tok, ind, rhs)
-     char *tok;
-     arrayind_t ind;
-     char *rhs;
+expr_bind_array_element (
+     char *tok,
+     arrayind_t ind,
+     char *rhs
+)
 {
   char *lhs, *vname;
   size_t llen;
@@ -402,10 +407,11 @@ expr_bind_array_element (tok, ind, rhs)
    safe to let the loop terminate when expr_depth == 0, without freeing up
    any of the expr_depth[0] stuff. */
 intmax_t
-evalexp (expr, flags, validp)
-     char *expr;
-     int flags;
-     int *validp;
+evalexp (
+     char *expr,
+     int flags,
+     int *validp
+)
 {
   intmax_t val;
   int c;
@@ -447,8 +453,9 @@ evalexp (expr, flags, validp)
 }
 
 static intmax_t
-subexpr (expr)
-     char *expr;
+subexpr (
+     char *expr
+)
 {
   intmax_t val;
   char *p;
@@ -939,8 +946,10 @@ expmuldiv ()
 }
 
 static intmax_t
-ipow (base, exp)
-     intmax_t base, exp;
+ipow (
+     intmax_t base,
+     intmax_t exp
+)
 {
   intmax_t result;
 
@@ -1110,8 +1119,9 @@ exp0 ()
 }
 
 static void
-init_lvalue (lv)
-     struct lvalue *lv;
+init_lvalue (
+     struct lvalue *lv
+)
 {
   lv->tokstr = 0;
   lv->tokvar = 0;
@@ -1129,17 +1139,19 @@ alloc_lvalue ()
 }
 
 static void
-free_lvalue (lv)
-     struct lvalue *lv;
+free_lvalue (
+     struct lvalue *lv
+)
 {
   free (lv);		/* should be inlined */
 }
 
 static intmax_t
-expr_streval (tok, e, lvalue)
-     char *tok;
-     int e;
-     struct lvalue *lvalue;
+expr_streval (
+     char *tok,
+     int e,
+     struct lvalue *lvalue
+)
 {
   SHELL_VAR *v;
   char *value;
@@ -1238,8 +1250,9 @@ expr_streval (tok, e, lvalue)
 }
 
 static int
-_is_multiop (c)
-     int c;
+_is_multiop (
+     int c
+)
 {
   switch (c)
     {
@@ -1265,8 +1278,9 @@ _is_multiop (c)
 }
 
 static int
-_is_arithop (c)
-     int c;
+_is_arithop (
+     int c
+)
 {
   switch (c)
     {
@@ -1502,8 +1516,9 @@ readtok ()
 }
 
 static void
-evalerror (msg)
-     const char *msg;
+evalerror (
+     const char *msg
+)
 {
   char *name, *t;
 
@@ -1530,8 +1545,9 @@ evalerror (msg)
 #define VALID_NUMCHAR(c)	(ISALNUM(c) || ((c) == '_') || ((c) == '@'))
 
 static intmax_t
-strlong (num)
-     char *num;
+strlong (
+     char *num
+)
 {
   register char *s;
   register unsigned char c;
@@ -1608,16 +1624,18 @@ strlong (num)
 
 #if defined (EXPR_TEST)
 void *
-xmalloc (n)
-     int n;
+xmalloc (
+     int n
+)
 {
   return (malloc (n));
 }
 
 void *
-xrealloc (s, n)
-     char *s;
-     int n;
+xrealloc (
+     char *s,
+     int n
+)
 {
   return (realloc (s, n));
 }
@@ -1629,9 +1647,10 @@ char *get_string_value () { return 0; }
 
 procenv_t top_level;
 
-main (argc, argv)
-     int argc;
-     char **argv;
+main (
+     int argc,
+     char **argv
+)
 {
   register int i;
   intmax_t v;

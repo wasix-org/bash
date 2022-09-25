@@ -209,9 +209,10 @@ static int history_should_ignore PARAMS((char *));
 /* Is the history expansion starting at string[i] one that should not
    be expanded? */
 static int
-bash_history_inhibit_expansion (string, i)
-     char *string;
-     int i;
+bash_history_inhibit_expansion (
+     char *string,
+     int i
+)
 {
   int t, si;
   char hx[2];
@@ -278,8 +279,9 @@ bash_initialize_history ()
 }
 
 void
-bash_history_reinit (interact)
-     int interact;
+bash_history_reinit (
+     int interact
+)
 {
 #if defined (BANG_HISTORY)
   history_expansion = (interact == 0) ? histexp_flag : HISTEXPAND_DEFAULT;
@@ -352,8 +354,9 @@ bash_clear_history ()
 
 /* Delete and free the history list entry at offset I. */
 int
-bash_delete_histent (i)
-     int i;
+bash_delete_histent (
+     int i
+)
 {
   HIST_ENTRY *discard;
 
@@ -367,8 +370,10 @@ bash_delete_histent (i)
 }
 
 int
-bash_delete_history_range (first, last)
-     int first, last;
+bash_delete_history_range (
+     int first,
+     int last
+)
 {
   register int i;
   HIST_ENTRY **discard_list;
@@ -434,8 +439,9 @@ save_history ()
 #endif
 
 int
-maybe_append_history (filename)
-     char *filename;
+maybe_append_history (
+     char *filename
+)
 {
   int fd, result, histlen;
   struct stat buf;
@@ -520,8 +526,9 @@ maybe_save_shell_history ()
 #if defined (READLINE)
 /* Tell readline () that we have some text for it to edit. */
 static void
-re_edit (text)
-     char *text;
+re_edit (
+     char *text
+)
 {
   if (bash_input.type == st_stdin)
     bash_re_edit (text);
@@ -530,8 +537,9 @@ re_edit (text)
 
 /* Return 1 if this line needs history expansion. */
 static int
-history_expansion_p (line)
-     char *line;
+history_expansion_p (
+     char *line
+)
 {
   register char *s;
 
@@ -549,9 +557,11 @@ history_expansion_p (line)
    REMEMBER_ON_HISTORY can veto, and does.
    Right now this does history expansion. */
 char *
-pre_process_line (line, print_changes, addit)
-     char *line;
-     int print_changes, addit;
+pre_process_line (
+     char *line,
+     int print_changes,
+     int addit
+)
 {
   char *history_value;
   char *return_value;
@@ -647,8 +657,9 @@ pre_process_line (line, print_changes, addit)
    first non-whitespace character. Return 0 if the line does not contain a
    comment. */
 static int
-shell_comment (line)
-     char *line;
+shell_comment (
+     char *line
+)
 {
   char *p;
   int n;
@@ -667,8 +678,9 @@ shell_comment (line)
 /* Remove shell comments from LINE.  A `#' and anything after it is a comment.
    This isn't really useful yet, since it doesn't handle quoting. */
 static char *
-filter_comments (line)
-     char *line;
+filter_comments (
+     char *line
+)
 {
   char *p;
 
@@ -683,8 +695,9 @@ filter_comments (line)
 /* Check LINE against what HISTCONTROL says to do.  Returns 1 if the line
    should be saved; 0 if it should be discarded. */
 static int
-check_history_control (line)
-     char *line;
+check_history_control (
+     char *line
+)
 {
   HIST_ENTRY *temp;
   int r;
@@ -716,8 +729,9 @@ check_history_control (line)
 /* Remove all entries matching LINE from the history list.  Triggered when
    HISTCONTROL includes `erasedups'. */
 static void
-hc_erasedups (line)
-     char *line;
+hc_erasedups (
+     char *line
+)
 {
   HIST_ENTRY *temp;
   int r;
@@ -751,8 +765,9 @@ hc_erasedups (line)
    entered.  We also make sure to save multiple-line quoted strings or other
    constructs. */
 void
-maybe_add_history (line)
-     char *line;
+maybe_add_history (
+     char *line
+)
 {
   int is_comment;
 
@@ -781,9 +796,10 @@ maybe_add_history (line)
    history if it's OK.  Used by `history -s' as well as maybe_add_history().
    Returns 1 if the line was saved in the history, 0 otherwise. */
 int
-check_add_history (line, force)
-     char *line;
-     int force;
+check_add_history (
+     char *line,
+     int force
+)
 {
   if (check_history_control (line) && history_should_ignore (line) == 0)
     {
@@ -820,8 +836,9 @@ int syslog_history = 1;
 #endif
 
 void
-bash_syslog_history (line)
-     const char *line;
+bash_syslog_history (
+     const char *line
+)
 {
   char trunc[SYSLOG_MAXLEN], *msg;
   char loghdr[SYSLOG_MAXHDR];
@@ -864,8 +881,9 @@ bash_syslog_history (line)
    complete parser construct, append LINE to the last history line instead
    of adding it as a new line. */
 void
-bash_add_history (line)
-     char *line;
+bash_add_history (
+     char *line
+)
 {
   int add_it, offset, curlen, is_comment;
   HIST_ENTRY *current, *old;
@@ -954,8 +972,9 @@ bash_add_history (line)
 }
 
 static void
-really_add_history (line)
-     char *line;
+really_add_history (
+     char *line
+)
 {
   hist_last_line_added = 1;
   hist_last_line_pushed = 0;
@@ -971,8 +990,9 @@ history_number ()
 }
 
 static int
-should_expand (s)
-     char *s;
+should_expand (
+     char *s
+)
 {
   char *p;
 
@@ -987,8 +1007,9 @@ should_expand (s)
 }
 
 static int
-histignore_item_func (ign)
-     struct ign *ign;
+histignore_item_func (
+     struct ign *ign
+)
 {
   if (should_expand (ign->val))
     ign->flags |= HIGN_EXPAND;
@@ -996,8 +1017,9 @@ histignore_item_func (ign)
 }
 
 void
-setup_history_ignore (varname)
-     char *varname;
+setup_history_ignore (
+     char *varname
+)
 {
   setup_ignore_patterns (&histignore);
 }
@@ -1025,8 +1047,9 @@ last_history_line ()
 }
 
 static char *
-expand_histignore_pattern (pat)
-     char *pat;
+expand_histignore_pattern (
+     char *pat
+)
 {
   HIST_ENTRY *phe;
   char *ret;
@@ -1044,8 +1067,9 @@ expand_histignore_pattern (pat)
 /* Return 1 if we should not put LINE into the history according to the
    patterns in HISTIGNORE. */
 static int
-history_should_ignore (line)
-     char *line;
+history_should_ignore (
+     char *line
+)
 {
   register int i, match;
   char *npat;

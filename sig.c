@@ -96,8 +96,9 @@ static SigHandler *old_winch = (SigHandler *)SIG_DFL;
 static void initialize_shell_signals PARAMS((void));
 
 void
-initialize_signals (reinit)
-     int reinit;
+initialize_signals (
+     int reinit
+)
 {
   initialize_shell_signals ();
   initialize_job_signals ();
@@ -124,11 +125,11 @@ struct termsig {
    and so forth. */
 static struct termsig terminating_signals[] = {
 #ifdef SIGHUP
-{  SIGHUP, NULL_HANDLER, 0 },
+{  SIGHUP, NULL_HANDLER, 0, 0 },
 #endif
 
 #ifdef SIGINT
-{  SIGINT, NULL_HANDLER, 0 },
+{  SIGINT, NULL_HANDLER, 0, 0 },
 #endif
 
 #ifdef SIGILL
@@ -144,11 +145,11 @@ static struct termsig terminating_signals[] = {
 #endif
 
 #ifdef SIGDANGER
-{  SIGDANGER, NULL_HANDLER, 0 },
+{  SIGDANGER, NULL_HANDLER, 0, 0 },
 #endif
 
 #ifdef SIGEMT
-{  SIGEMT, NULL_HANDLER, 0 },
+{  SIGEMT, NULL_HANDLER, 0, 0 },
 #endif
 
 #ifdef SIGFPE
@@ -168,15 +169,15 @@ static struct termsig terminating_signals[] = {
 #endif
 
 #ifdef SIGPIPE
-{  SIGPIPE, NULL_HANDLER, 0 },
+{  SIGPIPE, NULL_HANDLER, 0, 0 },
 #endif
 
 #ifdef SIGALRM
-{  SIGALRM, NULL_HANDLER, 0 },
+{  SIGALRM, NULL_HANDLER, 0, 0 },
 #endif
 
 #ifdef SIGTERM
-{  SIGTERM, NULL_HANDLER, 0 },
+{  SIGTERM, NULL_HANDLER, 0, 0 },
 #endif
 
 /* These don't generate core dumps on anything but Linux, but we're doing
@@ -190,25 +191,25 @@ static struct termsig terminating_signals[] = {
 #endif
 
 #ifdef SIGVTALRM
-{  SIGVTALRM, NULL_HANDLER, 0 },
+{  SIGVTALRM, NULL_HANDLER, 0, 0 },
 #endif
 
 #if 0
 #ifdef SIGPROF
-{  SIGPROF, NULL_HANDLER, 0 },
+{  SIGPROF, NULL_HANDLER, 0, 0 },
 #endif
 #endif
 
 #ifdef SIGLOST
-{  SIGLOST, NULL_HANDLER, 0 },
+{  SIGLOST, NULL_HANDLER, 0, 0 },
 #endif
 
 #ifdef SIGUSR1
-{  SIGUSR1, NULL_HANDLER, 0 },
+{  SIGUSR1, NULL_HANDLER, 0, 0 },
 #endif
 
 #ifdef SIGUSR2
-{  SIGUSR2, NULL_HANDLER, 0 },
+{  SIGUSR2, NULL_HANDLER, 0, 0 },
 #endif
 };
 
@@ -472,8 +473,9 @@ throw_to_top_level ()
 
 /* This is just here to isolate the longjmp calls. */
 void
-jump_to_top_level (value)
-     int value;
+jump_to_top_level (
+     int value
+)
 {
   sh_longjmp (top_level, value);
 }
@@ -487,8 +489,9 @@ restore_sigmask ()
 }
 
 sighandler
-termsig_sighandler (sig)
-     int sig;
+termsig_sighandler (
+     int sig
+)
 {
   /* If we get called twice with the same signal before handling it,
      terminate right away. */
@@ -561,8 +564,9 @@ termsig_sighandler (sig)
 }
 
 void
-termsig_handler (sig)
-     int sig;
+termsig_handler (
+     int sig
+)
 {
   static int handling_termsig = 0;
   int i, core;
@@ -654,8 +658,9 @@ termsig_handler (sig)
 
 /* What we really do when SIGINT occurs. */
 sighandler
-sigint_sighandler (sig)
-     int sig;
+sigint_sighandler (
+     int sig
+)
 {
 #if defined (MUST_REINSTALL_SIGHANDLERS)
   signal (sig, sigint_sighandler);
@@ -702,8 +707,9 @@ sigint_sighandler (sig)
 
 #if defined (SIGWINCH)
 sighandler
-sigwinch_sighandler (sig)
-     int sig;
+sigwinch_sighandler (
+     int sig
+)
 {
 #if defined (MUST_REINSTALL_SIGHANDLERS)
   set_signal_handler (SIGWINCH, sigwinch_sighandler);
@@ -730,8 +736,9 @@ unset_sigwinch_handler ()
 }
 
 sighandler
-sigterm_sighandler (sig)
-     int sig;
+sigterm_sighandler (
+     int sig
+)
 {
   sigterm_received = 1;		/* XXX - counter? */
   SIGRETURN (0);
@@ -741,8 +748,11 @@ sigterm_sighandler (sig)
 #if !defined (HAVE_POSIX_SIGNALS)
 
 /* Perform OPERATION on NEWSET, perhaps leaving information in OLDSET. */
-sigprocmask (operation, newset, oldset)
-     int operation, *newset, *oldset;
+sigprocmask (
+     int operation,
+     int *newset,
+     int *oldset
+)
 {
   int old, new;
 
@@ -780,9 +790,10 @@ sigprocmask (operation, newset, oldset)
 #endif
 
 SigHandler *
-set_signal_handler (sig, handler)
-     int sig;
-     SigHandler *handler;
+set_signal_handler (
+     int sig,
+     SigHandler *handler
+)
 {
   struct sigaction act, oact;
 

@@ -89,15 +89,17 @@ static struct ignorevar execignore =
 };
 
 void
-setup_exec_ignore (varname)
-     char *varname;
+setup_exec_ignore (
+     char *varname
+)
 {
   setup_ignore_patterns (&execignore);
 }
 
 static int
-exec_name_should_ignore (name)
-     const char *name;
+exec_name_should_ignore (
+     const char *name
+)
 {
   struct ign *p;
 
@@ -112,8 +114,9 @@ exec_name_should_ignore (name)
    The EXECABLE bit is non-zero the file is executble.
    Zero is returned if the file is not found. */
 int
-file_status (name)
-     const char *name;
+file_status (
+     const char *name
+)
 {
   struct stat finfo;
   int r;
@@ -202,8 +205,9 @@ file_status (name)
    executable file is; do not change this unless YOU know
    what an executable file is. */
 int
-executable_file (file)
-     const char *file;
+executable_file (
+     const char *file
+)
 {
   int s;
 
@@ -216,15 +220,17 @@ executable_file (file)
 }
 
 int
-is_directory (file)
-     const char *file;
+is_directory (
+     const char *file
+)
 {
   return (file_status (file) & FS_DIRECTORY);
 }
 
 int
-executable_or_directory (file)
-     const char *file;
+executable_or_directory (
+     const char *file
+)
 {
   int s;
 
@@ -238,8 +244,9 @@ executable_or_directory (file)
    couldn't be found.  If a file is found that isn't executable,
    and that is the only match, then return that. */
 char *
-find_user_command (name)
-     const char *name;
+find_user_command (
+     const char *name
+)
 {
   return (find_user_command_internal (name, FS_EXEC_PREFERRED|FS_NODIRS));
 }
@@ -250,16 +257,18 @@ find_user_command (name)
    returns the first readable file found; designed to be used to look
    for shell scripts or files to source. */
 char *
-find_path_file (name)
-     const char *name;
+find_path_file (
+     const char *name
+)
 {
   return (find_user_command_internal (name, FS_READABLE));
 }
 
 static char *
-_find_user_command_internal (name, flags)
-     const char *name;
-     int flags;
+_find_user_command_internal (
+     const char *name,
+     int flags
+)
 {
   char *path_list, *cmd;
   SHELL_VAR *var;
@@ -280,9 +289,10 @@ _find_user_command_internal (name, flags)
 }
 
 static char *
-find_user_command_internal (name, flags)
-     const char *name;
-     int flags;
+find_user_command_internal (
+     const char *name,
+     int flags
+)
 {
 #ifdef __WIN32__
   char *res, *dotexe;
@@ -305,9 +315,10 @@ find_user_command_internal (name, flags)
    the index is modified by this function.
    Return the next element of PATH_LIST or NULL if there are no more. */
 static char *
-get_next_path_element (path_list, path_index_pointer)
-     char *path_list;
-     int *path_index_pointer;
+get_next_path_element (
+     char *path_list,
+     int *path_index_pointer
+)
 {
   char *path;
 
@@ -333,9 +344,10 @@ get_next_path_element (path_list, path_index_pointer)
    the Posix standard path.
    Returns a newly-allocated string. */
 char *
-search_for_command (pathname, flags)
-     const char *pathname;
-     int flags;
+search_for_command (
+     const char *pathname,
+     int flags
+)
 {
   char *hashed_file, *command, *path_list;
   int temp_path, st;
@@ -417,9 +429,11 @@ search_for_command (pathname, flags)
 }
 
 char *
-user_command_matches (name, flags, state)
-     const char *name;
-     int flags, state;
+user_command_matches (
+     const char *name,
+     int flags,
+     int state
+)
 {
   register int i;
   int  path_index, name_len;
@@ -501,9 +515,10 @@ user_command_matches (name, flags, state)
 }
 
 static char *
-find_absolute_program (name, flags)
-     const char *name;
-     int flags;
+find_absolute_program (
+     const char *name,
+     int flags
+)
 {
   int st;
 
@@ -523,11 +538,13 @@ find_absolute_program (name, flags)
 }
 
 static char *
-find_in_path_element (name, path, flags, name_len, dotinfop)
-     const char *name;
-     char *path;
-     int flags, name_len;
-     struct stat *dotinfop;
+find_in_path_element (
+     const char *name,
+     char *path,
+     int flags,
+     int name_len,
+     struct stat *dotinfop
+)
 {
   int status;
   char *full_path, *xpath;
@@ -604,10 +621,11 @@ find_in_path_element (name, path, flags, name_len, dotinfop)
       FS_NODIRS:		Don't find any directories.
 */
 static char *
-find_user_command_in_path (name, path_list, flags)
-     const char *name;
-     char *path_list;
-     int flags;
+find_user_command_in_path (
+     const char *name,
+     char *path_list,
+     int flags
+)
 {
   char *full_path, *path;
   int path_index, name_len;
@@ -679,10 +697,11 @@ find_user_command_in_path (name, path_list, flags)
 /* External interface to find a command given a $PATH.  Separate from
    find_user_command_in_path to allow future customization. */
 char *
-find_in_path (name, path_list, flags)
-     const char *name;
-     char *path_list;
-     int flags;
+find_in_path (
+     const char *name,
+     char *path_list,
+     int flags
+)
 {
   return (find_user_command_in_path (name, path_list, flags));
 }

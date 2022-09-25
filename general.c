@@ -100,8 +100,9 @@ static struct {
 static char *saved_posix_vars = 0;
 
 void
-posix_initialize (on)
-     int on;
+posix_initialize (
+     int on
+)
 {
   /* Things that should be turned on when posix mode is enabled. */
   if (on != 0)
@@ -134,8 +135,9 @@ num_posix_options ()
 }
 
 char *
-get_posix_options (bitmap)
-     char *bitmap;
+get_posix_options (
+     char *bitmap
+)
 {
   register int i;
 
@@ -154,8 +156,9 @@ save_posix_options ()
 }
 
 void
-set_posix_options (bitmap)
-     const char *bitmap;
+set_posix_options (
+     const char *bitmap
+)
 {
   register int i;
 
@@ -171,8 +174,9 @@ set_posix_options (bitmap)
 
 #if defined (RLIMTYPE)
 RLIMTYPE
-string_to_rlimtype (s)
-     char *s;
+string_to_rlimtype (
+     char *s
+)
 {
   RLIMTYPE ret;
   int neg;
@@ -192,9 +196,10 @@ string_to_rlimtype (s)
 }
 
 void
-print_rlimtype (n, addnl)
-     RLIMTYPE n;
-     int addnl;
+print_rlimtype (
+     RLIMTYPE n,
+     int addnl
+)
 {
   char s[INT_STRLEN_BOUND (RLIMTYPE) + 1], *p;
 
@@ -228,8 +233,9 @@ print_rlimtype (n, addnl)
 
 /* Return non-zero if all of the characters in STRING are digits. */
 int
-all_digits (string)
-     const char *string;
+all_digits (
+     const char *string
+)
 {
   register const char *s;
 
@@ -244,9 +250,10 @@ all_digits (string)
    valid number.  Stuff the converted number into RESULT if RESULT is
    not null. */
 int
-legal_number (string, result)
-     const char *string;
-     intmax_t *result;
+legal_number (
+     const char *string,
+     intmax_t *result
+)
 {
   intmax_t value;
   char *ep;
@@ -285,8 +292,9 @@ legal_number (string, result)
    solely of letters, digits, and underscores, and does not begin with a
    digit. */
 int
-legal_identifier (name)
-     const char *name;
+legal_identifier (
+     const char *name
+)
 {
   register const char *s;
   unsigned char c;
@@ -308,9 +316,10 @@ legal_identifier (name)
    be used to allow values to be stored and indirectly referenced, but
    not used in assignments. */
 int
-valid_nameref_value (name, flags)
-     const char *name;
-     int flags;
+valid_nameref_value (
+     const char *name,
+     int flags
+)
 {
   if (name == 0 || *name == 0)
     return 0;
@@ -327,10 +336,11 @@ valid_nameref_value (name, flags)
 }
 
 int
-check_selfref (name, value, flags)
-     const char *name;
-     char *value;
-     int flags;
+check_selfref (
+     const char *name,
+     char *value,
+     int flags
+)
 {
   char *t;
 
@@ -359,9 +369,10 @@ check_selfref (name, value, flags)
    the word is checked to ensure that it consists of only letters,
    digits, and underscores, and does not consist of all digits. */
 int
-check_identifier (word, check_word)
-     WORD_DESC *word;
-     int check_word;
+check_identifier (
+     WORD_DESC *word,
+     int check_word
+)
 {
   if (word->flags & (W_HASDOLLAR|W_QUOTED))	/* XXX - HASDOLLAR? */
     {
@@ -383,9 +394,10 @@ check_identifier (word, check_word)
    Posix mode, we require that STRING be a valid shell identifier.  Not
    used yet. */
 int
-importable_function_name (string, len)
-     const char *string;
-     size_t len;
+importable_function_name (
+     const char *string,
+     size_t len
+)
 {
   if (absolute_program (string))	/* don't allow slash */
     return 0;
@@ -397,8 +409,9 @@ importable_function_name (string, len)
 }
 
 int
-exportable_function_name (string)
-     const char *string;
+exportable_function_name (
+     const char *string
+)
 {
   if (absolute_program (string))
     return 0;
@@ -411,9 +424,10 @@ exportable_function_name (string)
    essentially all characters except those which must be quoted to the
    parser (which disqualifies them from alias expansion anyway) and `/'. */
 int
-legal_alias_name (string, flags)
-     const char *string;
-     int flags;
+legal_alias_name (
+     const char *string,
+     int flags
+)
 {
   register const char *s;
 
@@ -428,9 +442,10 @@ legal_alias_name (string, flags)
    and require an array subscript before the `=' to denote an assignment
    statement. */
 int
-assignment (string, flags)
-     const char *string;
-     int flags;
+assignment (
+     const char *string,
+     int flags
+)
 {
   register unsigned char c;
   register int newi, indx;
@@ -490,8 +505,9 @@ assignment (string, flags)
 }
 
 int
-line_isblank (line)
-     const char *line;
+line_isblank (
+     const char *line
+)
 {
   register int i;
 
@@ -521,8 +537,9 @@ line_isblank (line)
 
 /* Make sure no-delay mode is not set on file descriptor FD. */
 int
-sh_unset_nodelay_mode (fd)
-     int fd;
+sh_unset_nodelay_mode (
+     int fd
+)
 {
   int flags, bflags;
 
@@ -552,23 +569,26 @@ sh_unset_nodelay_mode (fd)
 
 /* Just a wrapper for the define in include/filecntl.h */
 int
-sh_setclexec (fd)
-     int fd;
+sh_setclexec (
+     int fd
+)
 {
   return (SET_CLOSE_ON_EXEC (fd));
 }
 
 /* Return 1 if file descriptor FD is valid; 0 otherwise. */
 int
-sh_validfd (fd)
-     int fd;
+sh_validfd (
+     int fd
+)
 {
   return (fcntl (fd, F_GETFD, 0) >= 0);
 }
 
 int
-fd_ispipe (fd)
-     int fd;
+fd_ispipe (
+     int fd
+)
 {
   errno = 0;
   return ((lseek (fd, 0L, SEEK_CUR) < 0) && (errno == ESPIPE));
@@ -607,9 +627,12 @@ check_dev_tty ()
    expensive.  If non-NULL STP1 and STP2 point to stat structures
    corresponding to PATH1 and PATH2, respectively. */
 int
-same_file (path1, path2, stp1, stp2)
-     const char *path1, *path2;
-     struct stat *stp1, *stp2;
+same_file (
+     const char *path1,
+     const char *path2,
+     struct stat *stp1,
+     struct stat *stp2
+)
 {
   struct stat st1, st2;
 
@@ -638,8 +661,11 @@ same_file (path1, path2, stp1, stp2)
    file descriptors.  If it's less than 20, we get the maximum value
    available from getdtablesize(2). */
 int
-move_to_high_fd (fd, check_new, maxfd)
-     int fd, check_new, maxfd;
+move_to_high_fd (
+     int fd,
+     int check_new,
+     int maxfd
+)
 {
   int script_fd, nfds, ignore;
 
@@ -676,9 +702,10 @@ move_to_high_fd (fd, check_new, maxfd)
    All of the characters must be printable or whitespace. */
 
 int
-check_binary_file (sample, sample_len)
-     const char *sample;
-     int sample_len;
+check_binary_file (
+     const char *sample,
+     int sample_len
+)
 {
   register int i;
   unsigned char c;
@@ -702,8 +729,9 @@ check_binary_file (sample, sample_len)
 /* **************************************************************** */
 
 int
-sh_openpipe (pv)
-     int *pv;
+sh_openpipe (
+     int *pv
+)
 {
   int r;
 
@@ -717,8 +745,9 @@ sh_openpipe (pv)
 }
 
 int
-sh_closepipe (pv)
-     int *pv;
+sh_closepipe (
+     int *pv
+)
 {
   if (pv[0] >= 0)
     close (pv[0]);
@@ -737,8 +766,9 @@ sh_closepipe (pv)
 /* **************************************************************** */
 
 int
-file_exists (fn)
-     const char *fn;
+file_exists (
+     const char *fn
+)
 {
   struct stat sb;
 
@@ -746,8 +776,9 @@ file_exists (fn)
 }
 
 int
-file_isdir (fn)
-     const char *fn;
+file_isdir (
+     const char *fn
+)
 {
   struct stat sb;
 
@@ -755,8 +786,9 @@ file_isdir (fn)
 }
 
 int
-file_iswdir (fn)
-     const char *fn;
+file_iswdir (
+     const char *fn
+)
 {
   return (file_isdir (fn) && sh_eaccess (fn, W_OK) == 0);
 }
@@ -764,8 +796,9 @@ file_iswdir (fn)
 /* Return 1 if STRING is "." or "..", optionally followed by a directory
    separator */
 int
-path_dot_or_dotdot (string)
-     const char *string;
+path_dot_or_dotdot (
+     const char *string
+)
 {
   if (string == 0 || *string == '\0' || *string != '.')
     return (0);
@@ -780,8 +813,9 @@ path_dot_or_dotdot (string)
 /* Return 1 if STRING contains an absolute pathname, else 0.  Used by `cd'
    to decide whether or not to look up a directory name in $CDPATH. */
 int
-absolute_pathname (string)
-     const char *string;
+absolute_pathname (
+     const char *string
+)
 {
   if (string == 0 || *string == '\0')
     return (0);
@@ -802,8 +836,9 @@ absolute_pathname (string)
    contains any slashes.  This is used to decide whether or not to look
    up through $PATH. */
 int
-absolute_program (string)
-     const char *string;
+absolute_program (
+     const char *string
+)
 {
   return ((char *)mbschr (string, '/') != (char *)NULL);
 }
@@ -819,8 +854,10 @@ absolute_program (string)
    returns a new string, even if STRING was an absolute pathname to
    begin with. */
 char *
-make_absolute (string, dot_path)
-     const char *string, *dot_path;
+make_absolute (
+     const char *string,
+     const char *dot_path
+)
 {
   char *result;
 
@@ -845,8 +882,9 @@ make_absolute (string, dot_path)
 /* Return the `basename' of the pathname in STRING (the stuff after the
    last '/').  If STRING is `/', just return it. */
 char *
-base_pathname (string)
-     char *string;
+base_pathname (
+     char *string
+)
 {
   char *p;
 
@@ -867,8 +905,9 @@ base_pathname (string)
    the current working directory prepended.  A new string is
    returned in either case. */
 char *
-full_pathname (file)
-     char *file;
+full_pathname (
+     char *file
+)
 {
   char *ret;
 
@@ -890,8 +929,9 @@ static char tdir[PATH_MAX];
 /* Return a pretty pathname.  If the first part of the pathname is
    the same as $HOME, then replace that with `~'.  */
 char *
-polite_directory_format (name)
-     char *name;
+polite_directory_format (
+     char *name
+)
 {
   char *home;
   int l;
@@ -913,9 +953,10 @@ polite_directory_format (name)
    keep any tilde prefix and PROMPT_DIRTRIM trailing directory components
    and replace the intervening characters with `...' */
 char *
-trim_pathname (name, maxlen)
-     char *name;
-     int maxlen;
+trim_pathname (
+     char *name,
+     int maxlen
+)
 {
   int nlen, ndirs;
   intmax_t nskip;
@@ -980,9 +1021,10 @@ trim_pathname (name, maxlen)
    than its argument.  If FLAGS is non-zero, we are printing for portable
    re-input and should single-quote filenames appropriately. */
 char *
-printable_filename (fn, flags)
-     char *fn;
-     int flags;
+printable_filename (
+     char *fn,
+     int flags
+)
 {
   char *newf;
 
@@ -1000,9 +1042,10 @@ printable_filename (fn, flags)
    return the next one pointed to by (P_INDEX), or NULL if there are no more.
    Advance (P_INDEX) to the character after the colon. */
 char *
-extract_colon_unit (string, p_index)
-     char *string;
-     int *p_index;
+extract_colon_unit (
+     char *string,
+     int *p_index
+)
 {
   int i, start, len;
   char *value;
@@ -1064,8 +1107,9 @@ static char **bash_tilde_suffixes2;
    If PUSHD_AND_POPD is defined, ~[+-]N expands to directories from the
    directory stack. */
 static char *
-bash_special_tilde_expansions (text)
-     char *text;
+bash_special_tilde_expansions (
+     char *text
+)
 {
   char *result;
 
@@ -1133,8 +1177,9 @@ tilde_initialize ()
 #define TILDE_END(c)	((c) == '\0' || (c) == '/' || (c) == ':')
 
 static int
-unquoted_tilde_word (s)
-     const char *s;
+unquoted_tilde_word (
+     const char *s
+)
 {
   const char *r;
 
@@ -1156,9 +1201,11 @@ unquoted_tilde_word (s)
    *LENP.  FLAGS tells whether or not we're in an assignment context --
    if so, `:' delimits the end of the tilde prefix as well. */
 char *
-bash_tilde_find_word (s, flags, lenp)
-     const char *s;
-     int flags, *lenp;
+bash_tilde_find_word (
+     const char *s,
+     int flags,
+     int *lenp
+)
 {
   const char *r;
   char *ret;
@@ -1195,9 +1242,10 @@ bash_tilde_find_word (s, flags, lenp)
    ASSIGN_P is 2, we are expanding the rhs of an assignment statement,
    so `=~' is not valid. */
 char *
-bash_tilde_expand (s, assign_p)
-     const char *s;
-     int assign_p;
+bash_tilde_expand (
+     const char *s,
+     int assign_p
+)
 {
   int r;
   char *ret;
@@ -1287,8 +1335,9 @@ int
 #if defined (__STDC__) || defined ( _MINIX)
 group_member (gid_t gid)
 #else
-group_member (gid)
-     gid_t gid;
+group_member (
+     gid_t gid
+)
 #endif /* !__STDC__ && !_MINIX */
 {
 #if defined (HAVE_GETGROUPS)
@@ -1317,8 +1366,9 @@ group_member (gid)
 }
 
 char **
-get_group_list (ngp)
-     int *ngp;
+get_group_list (
+     int *ngp
+)
 {
   static char **group_vector = (char **)NULL;
   register int i;
@@ -1350,8 +1400,9 @@ get_group_list (ngp)
 }
 
 int *
-get_group_array (ngp)
-     int *ngp;
+get_group_array (
+     int *ngp
+)
 {
   int i;
   static int *group_iarray = (int *)NULL;

@@ -92,8 +92,9 @@ usage()
 
 #ifdef INCLUDE_UNUSED
 static int
-getcflag (s)
-     char *s;
+getcflag (
+     char *s
+)
 {
   int i;
 
@@ -105,8 +106,9 @@ getcflag (s)
 #endif
 
 static char *
-cdesc (i)
-     int i;
+cdesc (
+     int i
+)
 {
   static char xbuf[16];
 
@@ -149,8 +151,9 @@ cdesc (i)
 }
 
 static char *
-getcstr (f)
-     int f;
+getcstr (
+     int f
+)
 {
   int i;
 
@@ -161,9 +164,10 @@ getcstr (f)
 }
 
 static void
-addcstr (str, flag)
-     char *str;
-     int flag;
+addcstr (
+     char *str,
+     int flag
+)
 {
   char *s, *fstr;
   unsigned char uc;
@@ -183,9 +187,10 @@ addcstr (str, flag)
 }
 
 static void
-addcchar (c, flag)
-     unsigned char c;
-     int flag;
+addcchar (
+     unsigned char c,
+     int flag
+)
 {
   char *fstr;
 
@@ -252,9 +257,10 @@ load_lsyntax ()
 }
 
 static void
-dump_lflags (fp, ind)
-     FILE *fp;
-     int ind;
+dump_lflags (
+     FILE *fp,
+     int ind
+)
 {
   int xflags, first, i;
 
@@ -278,9 +284,10 @@ dump_lflags (fp, ind)
 }
 
 static void
-wcomment (fp, i)
-     FILE *fp;
-     int i;
+wcomment (
+     FILE *fp,
+     int i
+)
 {
   fputs ("\t\t/* ", fp);
 
@@ -290,8 +297,9 @@ wcomment (fp, i)
 }
 
 static void
-dump_lsyntax (fp)
-     FILE *fp;
+dump_lsyntax (
+     FILE *fp
+)
 {
   int i;
 
@@ -311,9 +319,10 @@ dump_lsyntax (fp)
 }
 
 int
-main(argc, argv)
-     int argc;
-     char **argv;
+main(
+     int argc,
+     char **argv
+)
 {
   int opt, i;
   char *filename;
@@ -395,8 +404,9 @@ main(argc, argv)
 #endif
 
 char *
-strerror (e)
-     int e;
+strerror (
+     int e
+)
 {
   static char emsg[40];
 #if defined (HAVE_SYS_ERRLIST)

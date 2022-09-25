@@ -136,6 +136,18 @@ typedef struct g_list {
   struct g_list *next;
 } GENERIC_LIST;
 
+/* A structure which represents a word. */
+typedef struct word_desc {
+  char *word;		/* Zero terminated string. */
+  int flags;		/* Flags associated with this word. */
+} WORD_DESC;
+
+/* A linked list of words. */
+typedef struct word_list {
+  struct word_list *next;
+  WORD_DESC *word;
+} WORD_LIST;
+
 /* Here is a generic structure for associating character strings
    with integers.  It is used in the parser for shell tokenization. */
 typedef struct {
@@ -195,6 +207,10 @@ typedef struct {
 #  define _FUNCTION_DEF
 typedef int Function ();
 typedef void VFunction ();
+typedef int Function1 (volatile void*);
+typedef void VFunction1 (volatile void*);
+typedef int Function2 (volatile void*, volatile void*);
+typedef void VFunction2 (volatile void*, volatile void*);
 typedef char *CPFunction ();		/* no longer used */
 typedef char **CPPFunction ();		/* no longer used */
 #endif /* _FUNCTION_DEF */

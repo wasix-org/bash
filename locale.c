@@ -172,8 +172,10 @@ set_default_locale_vars ()
 /* Set one of the locale categories (specified by VAR) to VALUE.  Returns 1
   if successful, 0 otherwise. */
 int
-set_locale_var (var, value)
-     char *var, *value;
+set_locale_var (
+     char *var,
+     char *value
+)
 {
   int r;
   char *x;
@@ -301,8 +303,10 @@ set_locale_var (var, value)
    reset_locale_vars() to reset any default values if LC_ALL is unset or
    null. */
 int
-set_lang (var, value)
-     char *var, *value;
+set_lang (
+     char *var,
+     char *value
+)
 {
   FREE (lang);
   if (value)
@@ -334,8 +338,9 @@ set_default_lang ()
    The precedence is as POSIX.2 specifies:  LC_ALL has precedence over
    the specific locale variables, and LANG, if set, is used as the default. */
 char *
-get_locale_var (var)
-     char *var;
+get_locale_var (
+     char *var
+)
 {
   char *locale;
 
@@ -403,9 +408,11 @@ reset_locale_vars ()
    is not available, the passed string is returned unchanged.  The
    length of the translated string is returned in LENP, if non-null. */
 char *
-localetrans (string, len, lenp)
-     char *string;
-     int len, *lenp;
+localetrans (
+     char *string,
+     int len,
+     int *lenp
+)
 {
   char *locale, *t;
   char *translated;
@@ -461,9 +468,10 @@ localetrans (string, len, lenp)
 /* Change a bash string into a string suitable for inclusion in a `po' file.
    This backslash-escapes `"' and `\' and changes newlines into \\\n"\n". */
 char *
-mk_msgstr (string, foundnlp)
-     char *string;
-     int *foundnlp;
+mk_msgstr (
+     char *string,
+     int *foundnlp
+)
 {
   register int c, len;
   char *result, *r, *s;
@@ -512,9 +520,13 @@ mk_msgstr (string, foundnlp)
    by the caller.  The length of the translated string is returned in LENP,
    if non-null. */
 char *
-localeexpand (string, start, end, lineno, lenp)
-     char *string;
-     int start, end, lineno, *lenp;
+localeexpand (
+     char *string,
+     int start,
+     int end,
+     int lineno,
+     int *lenp
+)
 {
   int len, tlen, foundnl;
   char *temp, *t, *t2;
@@ -591,8 +603,9 @@ locale_setblanks ()
      language[_territory][.codeset][@modifier][+special][,[sponsor][_revision]]
    and return TRUE if the codeset is UTF-8 or utf8 */
 static int
-locale_isutf8 (lspec)
-     char *lspec;
+locale_isutf8 (
+     char *lspec
+)
 {
   char *cp, *encoding;
 

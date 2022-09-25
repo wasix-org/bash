@@ -33,8 +33,9 @@ extern sh_obj_cache_t wdcache, wlcache;
 
 /* Dispose of the command structure passed. */
 void
-dispose_command (command)
-     COMMAND *command;
+dispose_command (
+     COMMAND *command
+)
 {
   if (command == 0)
     return;
@@ -208,8 +209,9 @@ dispose_command (command)
 #if defined (COND_COMMAND)
 /* How to free a node in a conditional command. */
 void
-dispose_cond_node (cond)
-     COND_COM *cond;
+dispose_cond_node (
+     COND_COM *cond
+)
 {
   if (cond)
     {
@@ -225,8 +227,9 @@ dispose_cond_node (cond)
 #endif /* COND_COMMAND */
 
 void
-dispose_function_def_contents (c)
-     FUNCTION_DEF *c;
+dispose_function_def_contents (
+     FUNCTION_DEF *c
+)
 {
   dispose_word (c->name);
   dispose_command (c->command);
@@ -234,8 +237,9 @@ dispose_function_def_contents (c)
 }
 
 void
-dispose_function_def (c)
-     FUNCTION_DEF *c;
+dispose_function_def (
+     FUNCTION_DEF *c
+)
 {
   dispose_function_def_contents (c);
   free (c);
@@ -243,8 +247,9 @@ dispose_function_def (c)
 
 /* How to free a WORD_DESC. */
 void
-dispose_word (w)
-     WORD_DESC *w;
+dispose_word (
+     WORD_DESC *w
+)
 {
   FREE (w->word);
   ocache_free (wdcache, WORD_DESC, w);
@@ -252,8 +257,9 @@ dispose_word (w)
 
 /* Free a WORD_DESC, but not the word contained within. */
 void
-dispose_word_desc (w)
-     WORD_DESC *w;
+dispose_word_desc (
+     WORD_DESC *w
+)
 {
   w->word = 0;
   ocache_free (wdcache, WORD_DESC, w);
@@ -261,8 +267,9 @@ dispose_word_desc (w)
 
 /* How to get rid of a linked list of words.  A WORD_LIST. */
 void
-dispose_words (list)
-     WORD_LIST *list;
+dispose_words (
+     WORD_LIST *list
+)
 {
   WORD_LIST *t;
 
@@ -283,8 +290,9 @@ dispose_words (list)
 /* How to dispose of an array of pointers to char.  This is identical to
    free_array in stringlib.c. */
 void
-dispose_word_array (array)
-     char **array;
+dispose_word_array (
+     char **array
+)
 {
   register int count;
 
@@ -300,8 +308,9 @@ dispose_word_array (array)
 
 /* How to dispose of an list of redirections.  A REDIRECT. */
 void
-dispose_redirects (list)
-     REDIRECT *list;
+dispose_redirects (
+     REDIRECT *list
+)
 {
   register REDIRECT *t;
 

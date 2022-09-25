@@ -27,7 +27,7 @@ extern void uwp_init PARAMS((void));
 extern void begin_unwind_frame PARAMS((char *));
 extern void discard_unwind_frame PARAMS((char *));
 extern void run_unwind_frame PARAMS((char *));
-extern void add_unwind_protect (); /* Not portable to arbitrary C99 hosts.  */
+extern void add_unwind_protect PARAMS((VFunction *, volatile void *));
 extern void remove_unwind_protect PARAMS((void));
 extern void run_unwind_protects PARAMS((void));
 extern void clear_unwind_protect_list PARAMS((int));

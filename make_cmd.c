@@ -80,8 +80,9 @@ alloc_word_desc ()
 }
 
 WORD_DESC *
-make_bare_word (string)
-     const char *string;
+make_bare_word (
+     const char *string
+)
 {
   WORD_DESC *temp;
 
@@ -99,9 +100,10 @@ make_bare_word (string)
 }
 
 WORD_DESC *
-make_word_flags (w, string)
-     WORD_DESC *w;
-     const char *string;
+make_word_flags (
+     WORD_DESC *w,
+     const char *string
+)
 {
   register int i;
   size_t slen;
@@ -132,8 +134,9 @@ make_word_flags (w, string)
 }
 
 WORD_DESC *
-make_word (string)
-     const char *string;
+make_word (
+     const char *string
+)
 {
   WORD_DESC *temp;
 
@@ -142,8 +145,9 @@ make_word (string)
 }
 
 WORD_DESC *
-make_word_from_token (token)
-     int token;
+make_word_from_token (
+     int token
+)
 {
   char tokenizer[2];
 
@@ -154,9 +158,10 @@ make_word_from_token (token)
 }
 
 WORD_LIST *
-make_word_list (word, wlink)
-     WORD_DESC *word;
-     WORD_LIST *wlink;
+make_word_list (
+     WORD_DESC *word,
+     WORD_LIST *wlink
+)
 {
   WORD_LIST *temp;
 
@@ -168,9 +173,10 @@ make_word_list (word, wlink)
 }
 
 COMMAND *
-make_command (type, pointer)
-     enum command_type type;
-     SIMPLE_COM *pointer;
+make_command (
+     enum command_type type,
+     SIMPLE_COM *pointer
+)
 {
   COMMAND *temp;
 
@@ -183,9 +189,11 @@ make_command (type, pointer)
 }
 
 COMMAND *
-command_connect (com1, com2, connector)
-     COMMAND *com1, *com2;
-     int connector;
+command_connect (
+     COMMAND *com1,
+     COMMAND *com2,
+     int connector
+)
 {
   CONNECTION *temp;
 
@@ -197,12 +205,13 @@ command_connect (com1, com2, connector)
 }
 
 static COMMAND *
-make_for_or_select (type, name, map_list, action, lineno)
-     enum command_type type;
-     WORD_DESC *name;
-     WORD_LIST *map_list;
-     COMMAND *action;
-     int lineno;
+make_for_or_select (
+     enum command_type type,
+     WORD_DESC *name,
+     WORD_LIST *map_list,
+     COMMAND *action,
+     int lineno
+)
 {
   FOR_COM *temp;
 
@@ -216,21 +225,23 @@ make_for_or_select (type, name, map_list, action, lineno)
 }
 
 COMMAND *
-make_for_command (name, map_list, action, lineno)
-     WORD_DESC *name;
-     WORD_LIST *map_list;
-     COMMAND *action;
-     int lineno;
+make_for_command (
+     WORD_DESC *name,
+     WORD_LIST *map_list,
+     COMMAND *action,
+     int lineno
+)
 {
   return (make_for_or_select (cm_for, name, map_list, action, lineno));
 }
 
 COMMAND *
-make_select_command (name, map_list, action, lineno)
-     WORD_DESC *name;
-     WORD_LIST *map_list;
-     COMMAND *action;
-     int lineno;
+make_select_command (
+     WORD_DESC *name,
+     WORD_LIST *map_list,
+     COMMAND *action,
+     int lineno
+)
 {
 #if defined (SELECT_COMMAND)
   return (make_for_or_select (cm_select, name, map_list, action, lineno));
@@ -242,8 +253,9 @@ make_select_command (name, map_list, action, lineno)
 
 #if defined (ARITH_FOR_COMMAND)
 static WORD_LIST *
-make_arith_for_expr (s)
-     char *s;
+make_arith_for_expr (
+     char *s
+)
 {
   WORD_LIST *result;
   WORD_DESC *wd;
@@ -265,10 +277,11 @@ make_arith_for_expr (s)
    because no other function in this file requires that the caller free
    any arguments. */
 COMMAND *
-make_arith_for_command (exprs, action, lineno)
-     WORD_LIST *exprs;
-     COMMAND *action;
-     int lineno;
+make_arith_for_command (
+     WORD_LIST *exprs,
+     COMMAND *action,
+     int lineno
+)
 {
 #if defined (ARITH_FOR_COMMAND)
   ARITH_FOR_COM *temp;
@@ -343,8 +356,9 @@ make_arith_for_command (exprs, action, lineno)
 }
 
 COMMAND *
-make_group_command (command)
-     COMMAND *command;
+make_group_command (
+     COMMAND *command
+)
 {
   GROUP_COM *temp;
 
@@ -354,10 +368,11 @@ make_group_command (command)
 }
 
 COMMAND *
-make_case_command (word, clauses, lineno)
-     WORD_DESC *word;
-     PATTERN_LIST *clauses;
-     int lineno;
+make_case_command (
+     WORD_DESC *word,
+     PATTERN_LIST *clauses,
+     int lineno
+)
 {
   CASE_COM *temp;
 
@@ -370,9 +385,10 @@ make_case_command (word, clauses, lineno)
 }
 
 PATTERN_LIST *
-make_pattern_list (patterns, action)
-     WORD_LIST *patterns;
-     COMMAND *action;
+make_pattern_list (
+     WORD_LIST *patterns,
+     COMMAND *action
+)
 {
   PATTERN_LIST *temp;
 
@@ -385,8 +401,11 @@ make_pattern_list (patterns, action)
 }
 
 COMMAND *
-make_if_command (test, true_case, false_case)
-     COMMAND *test, *true_case, *false_case;
+make_if_command (
+     COMMAND *test,
+     COMMAND *true_case,
+     COMMAND *false_case
+)
 {
   IF_COM *temp;
 
@@ -399,9 +418,11 @@ make_if_command (test, true_case, false_case)
 }
 
 static COMMAND *
-make_until_or_while (which, test, action)
-     enum command_type which;
-     COMMAND *test, *action;
+make_until_or_while (
+     enum command_type which,
+     COMMAND *test,
+     COMMAND *action
+)
 {
   WHILE_COM *temp;
 
@@ -413,22 +434,27 @@ make_until_or_while (which, test, action)
 }
 
 COMMAND *
-make_while_command (test, action)
-     COMMAND *test, *action;
+make_while_command (
+     COMMAND *test,
+     COMMAND *action
+)
 {
   return (make_until_or_while (cm_while, test, action));
 }
 
 COMMAND *
-make_until_command (test, action)
-     COMMAND *test, *action;
+make_until_command (
+     COMMAND *test,
+     COMMAND *action
+)
 {
   return (make_until_or_while (cm_until, test, action));
 }
 
 COMMAND *
-make_arith_command (exp)
-     WORD_LIST *exp;
+make_arith_command (
+     WORD_LIST *exp
+)
 {
 #if defined (DPAREN_ARITHMETIC)
   COMMAND *command;
@@ -454,10 +480,12 @@ make_arith_command (exp)
 
 #if defined (COND_COMMAND)
 struct cond_com *
-make_cond_node (type, op, left, right)
-     int type;
-     WORD_DESC *op;
-     struct cond_com *left, *right;
+make_cond_node (
+     int type,
+     WORD_DESC *op,
+     struct cond_com *left,
+     struct cond_com *right
+)
 {
   COND_COM *temp;
 
@@ -474,8 +502,9 @@ make_cond_node (type, op, left, right)
 #endif
 
 COMMAND *
-make_cond_command (cond_node)
-     COND_COM *cond_node;
+make_cond_command (
+     COND_COM *cond_node
+)
 {
 #if defined (COND_COMMAND)
   COMMAND *command;
@@ -519,9 +548,10 @@ make_bare_simple_command ()
 /* Return a command which is the connection of the word or redirection
    in ELEMENT, and the command * or NULL in COMMAND. */
 COMMAND *
-make_simple_command (element, command)
-     ELEMENT element;
-     COMMAND *command;
+make_simple_command (
+     ELEMENT element,
+     COMMAND *command
+)
 {
   /* If we are starting from scratch, then make the initial command
      structure.  Also note that we have to fill in all the slots, since
@@ -558,9 +588,10 @@ make_simple_command (element, command)
    the redirectee.word with the new input text.  If <<- is on,
    then remove leading TABS from each line. */
 void
-make_here_document (temp, lineno)
-     REDIRECT *temp;
-     int lineno;
+make_here_document (
+     REDIRECT *temp,
+     int lineno
+)
 {
   int kill_leading, redir_len;
   char *redir_word, *document, *full_line;
@@ -672,11 +703,12 @@ document_done:
    INSTRUCTION is the instruction type, SOURCE is a file descriptor,
    and DEST is a file descriptor or a WORD_DESC *. */
 REDIRECT *
-make_redirection (source, instruction, dest_and_filename, flags)
-     REDIRECTEE source;
-     enum r_instruction instruction;
-     REDIRECTEE dest_and_filename;
-     int flags;
+make_redirection (
+     REDIRECTEE source,
+     enum r_instruction instruction,
+     REDIRECTEE dest_and_filename,
+     int flags
+)
 {
   REDIRECT *temp;
   WORD_DESC *w;
@@ -761,10 +793,12 @@ make_redirection (source, instruction, dest_and_filename, flags)
 }
 
 COMMAND *
-make_function_def (name, command, lineno, lstart)
-     WORD_DESC *name;
-     COMMAND *command;
-     int lineno, lstart;
+make_function_def (
+     WORD_DESC *name,
+     COMMAND *command,
+     int lineno,
+     int lstart
+)
 {
   FUNCTION_DEF *temp;
 #if defined (ARRAY_VARS)
@@ -802,8 +836,9 @@ make_function_def (name, command, lineno, lstart)
 }
 
 COMMAND *
-make_subshell_command (command)
-     COMMAND *command;
+make_subshell_command (
+     COMMAND *command
+)
 {
   SUBSHELL_COM *temp;
 
@@ -815,9 +850,10 @@ make_subshell_command (command)
 }
 
 COMMAND *
-make_coproc_command (name, command)
-     char *name;
-     COMMAND *command;
+make_coproc_command (
+     char *name,
+     COMMAND *command
+)
 {
   COPROC_COM *temp;
 
@@ -832,8 +868,9 @@ make_coproc_command (name, command)
    has just been parsed.  It seems simpler to do this here the one
    time then by any other method that I can think of. */
 COMMAND *
-clean_simple_command (command)
-     COMMAND *command;
+clean_simple_command (
+     COMMAND *command
+)
 {
   if (command->type != cm_simple)
     command_error ("clean_simple_command", CMDERR_BADTYPE, command->type, 0);
@@ -859,9 +896,11 @@ clean_simple_command (command)
    in the list.  This is done only for lists connected by `;'; it makes
    `;' bind `tighter' than `&'. */
 COMMAND *
-connect_async_list (command, command2, connector)
-     COMMAND *command, *command2;
-     int connector;
+connect_async_list (
+     COMMAND *command,
+     COMMAND *command2,
+     int connector
+)
 {
   COMMAND *t, *t1, *t2;
 

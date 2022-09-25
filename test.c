@@ -130,8 +130,10 @@ static int arithcomp PARAMS((char *, char *, int, int));
 static int patcomp PARAMS((char *, char *, int));
 
 static void
-test_syntax_error (format, arg)
-     char *format, *arg;
+test_syntax_error (
+     char *format,
+     char *arg
+)
 {
   builtin_error (format, arg);
   test_exit (TEST_ERREXIT_STATUS);
@@ -150,8 +152,9 @@ beyond ()
 /* Syntax error for when an integer argument was expected, but
    something else was found. */
 static void
-integer_expected_error (pch)
-     char *pch;
+integer_expected_error (
+     char *pch
+)
 {
   test_syntax_error (_("%s: integer expression expected"), pch);
 }
@@ -288,10 +291,11 @@ term ()
 }
 
 static int
-stat_mtime (fn, st, ts)
-     char *fn;
-     struct stat *st;
-     struct timespec *ts;
+stat_mtime (
+     char *fn,
+     struct stat *st,
+     struct timespec *ts
+)
 {
   int r;
 
@@ -303,9 +307,11 @@ stat_mtime (fn, st, ts)
 }
 
 static int
-filecomp (s, t, op)
-     char *s, *t;
-     int op;
+filecomp (
+     char *s,
+     char *t,
+     int op
+)
 {
   struct stat st1, st2;
   struct timespec ts1, ts2;
@@ -332,9 +338,12 @@ filecomp (s, t, op)
 }
 
 static int
-arithcomp (s, t, op, flags)
-     char *s, *t;
-     int op, flags;
+arithcomp (
+     char *s,
+     char *t,
+     int op,
+     int flags
+)
 {
   intmax_t l, r;
   int expok;
@@ -370,9 +379,11 @@ arithcomp (s, t, op, flags)
 }
 
 static int
-patcomp (string, pat, op)
-     char *string, *pat;
-     int op;
+patcomp (
+     char *string,
+     char *pat,
+     int op
+)
 {
   int m;
 
@@ -381,9 +392,12 @@ patcomp (string, pat, op)
 }
 
 int
-binary_test (op, arg1, arg2, flags)
-     char *op, *arg1, *arg2;
-     int flags;
+binary_test (
+     char *op,
+     char *arg1,
+     char *arg2,
+     int flags
+)
 {
   int patmatch;
 
@@ -510,8 +524,10 @@ unary_operator ()
 }
 
 int
-unary_test (op, arg)
-     char *op, *arg;
+unary_test (
+     char *op,
+     char *arg
+)
 {
   intmax_t r;
   struct stat stat_buf;
@@ -669,8 +685,9 @@ unary_test (op, arg)
 
 /* Return TRUE if OP is one of the test command's binary operators. */
 int
-test_binop (op)
-     char *op;
+test_binop (
+     char *op
+)
 {
   if (op[0] == '=' && op[1] == '\0')
     return (1);		/* '=' */
@@ -723,8 +740,9 @@ test_binop (op)
 
 /* Return non-zero if OP is one of the test command's unary operators. */
 int
-test_unop (op)
-     char *op;
+test_unop (
+     char *op
+)
 {
   if (op[0] != '-' || (op[1] && op[2] != 0))
     return (0);
@@ -857,9 +875,10 @@ posixtest ()
  *	test expr
  */
 int
-test_command (margc, margv)
-     int margc;
-     char **margv;
+test_command (
+     int margc,
+     char **margv
+)
 {
   int value;
   int code;

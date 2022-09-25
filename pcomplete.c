@@ -156,30 +156,30 @@ int progcomp_alias = 0;	/* unavailable to user code for now */
 #endif
 
 /* These are used to manage the arrays of strings for possible completions. */
-ITEMLIST it_aliases = { 0, it_init_aliases, (STRINGLIST *)0 };
-ITEMLIST it_arrayvars  = { LIST_DYNAMIC, it_init_arrayvars, (STRINGLIST *)0 };
-ITEMLIST it_bindings  = { 0, it_init_bindings, (STRINGLIST *)0 };
-ITEMLIST it_builtins  = { 0, it_init_builtins, (STRINGLIST *)0 };
-ITEMLIST it_commands = { LIST_DYNAMIC };	/* unused */
-ITEMLIST it_directories = { LIST_DYNAMIC };	/* unused */
-ITEMLIST it_disabled = { 0, it_init_disabled, (STRINGLIST *)0 };
-ITEMLIST it_enabled = { 0, it_init_enabled, (STRINGLIST *)0 };
-ITEMLIST it_exports  = { LIST_DYNAMIC, it_init_exported, (STRINGLIST *)0 };
-ITEMLIST it_files = { LIST_DYNAMIC };		/* unused */
-ITEMLIST it_functions  = { 0, it_init_functions, (STRINGLIST *)0 };
-ITEMLIST it_helptopics  = { 0, it_init_helptopics, (STRINGLIST *)0 };
-ITEMLIST it_hostnames  = { LIST_DYNAMIC, it_init_hostnames, (STRINGLIST *)0 };
-ITEMLIST it_groups = { LIST_DYNAMIC };		/* unused */
-ITEMLIST it_jobs = { LIST_DYNAMIC, it_init_jobs, (STRINGLIST *)0 };
-ITEMLIST it_keywords = { 0, it_init_keywords, (STRINGLIST *)0 };
-ITEMLIST it_running = { LIST_DYNAMIC, it_init_running, (STRINGLIST *)0 };
-ITEMLIST it_services = { LIST_DYNAMIC };	/* unused */
-ITEMLIST it_setopts = { 0, it_init_setopts, (STRINGLIST *)0 };
-ITEMLIST it_shopts = { 0, it_init_shopts, (STRINGLIST *)0 };
-ITEMLIST it_signals = { 0, it_init_signals, (STRINGLIST *)0 };
-ITEMLIST it_stopped = { LIST_DYNAMIC, it_init_stopped, (STRINGLIST *)0 };
-ITEMLIST it_users = { LIST_DYNAMIC };		/* unused */
-ITEMLIST it_variables = { LIST_DYNAMIC, it_init_variables, (STRINGLIST *)0 };
+ITEMLIST it_aliases = { 0, it_init_aliases, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_arrayvars  = { LIST_DYNAMIC, it_init_arrayvars, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_bindings  = { 0, it_init_bindings, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_builtins  = { 0, it_init_builtins, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_commands = { LIST_DYNAMIC, 0, 0, 0, 0 };	/* unused */
+ITEMLIST it_directories = { LIST_DYNAMIC, 0, 0, 0, 0 };	/* unused */
+ITEMLIST it_disabled = { 0, it_init_disabled, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_enabled = { 0, it_init_enabled, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_exports  = { LIST_DYNAMIC, it_init_exported, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_files = { LIST_DYNAMIC, 0, 0, 0, 0 };		/* unused */
+ITEMLIST it_functions  = { 0, it_init_functions, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_helptopics  = { 0, it_init_helptopics, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_hostnames  = { LIST_DYNAMIC, it_init_hostnames, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_groups = { LIST_DYNAMIC, 0, 0, 0, 0 };		/* unused */
+ITEMLIST it_jobs = { LIST_DYNAMIC, it_init_jobs, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_keywords = { 0, it_init_keywords, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_running = { LIST_DYNAMIC, it_init_running, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_services = { LIST_DYNAMIC, 0, 0, 0, 0 };	/* unused */
+ITEMLIST it_setopts = { 0, it_init_setopts, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_shopts = { 0, it_init_shopts, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_signals = { 0, it_init_signals, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_stopped = { LIST_DYNAMIC, it_init_stopped, (STRINGLIST *)0, 0, 0 };
+ITEMLIST it_users = { LIST_DYNAMIC, 0, 0, 0, 0 };		/* unused */
+ITEMLIST it_variables = { LIST_DYNAMIC, it_init_variables, (STRINGLIST *)0, 0, 0 };
 
 COMPSPEC *pcomp_curcs;
 const char *pcomp_curcmd;
@@ -194,9 +194,10 @@ static void
 #if defined (PREFER_STDARG)
 debug_printf (const char *format, ...)
 #else
-debug_printf (format, va_alist)
-     const char *format;
-     va_dcl
+debug_printf (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -219,15 +220,17 @@ debug_printf (format, va_alist)
 /* Functions to manage the item lists */
 
 void
-set_itemlist_dirty (it)
-     ITEMLIST *it;
+set_itemlist_dirty (
+     ITEMLIST *it
+)
 {
   it->flags |= LIST_DIRTY;
 }
 
 void
-initialize_itemlist (itp)
-     ITEMLIST *itp;
+initialize_itemlist (
+     ITEMLIST *itp
+)
 {
   (*itp->list_getter) (itp);
   itp->flags |= LIST_INITIALIZED;
@@ -235,8 +238,9 @@ initialize_itemlist (itp)
 }
 
 void
-clean_itemlist (itp)
-     ITEMLIST *itp;
+clean_itemlist (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
 
@@ -255,8 +259,9 @@ clean_itemlist (itp)
 
 
 static int
-shouldexp_filterpat (s)
-     char *s;
+shouldexp_filterpat (
+     char *s
+)
 {
   register char *p;
 
@@ -274,9 +279,10 @@ shouldexp_filterpat (s)
    quote a `&' and inhibit substitution.  Returns a new string.  This just
    calls stringlib.c:strcreplace(). */
 static char *
-preproc_filterpat (pat, text)
-     char *pat;
-     const char *text;
+preproc_filterpat (
+     char *pat,
+     const char *text
+)
 {
   char *ret;
 
@@ -290,10 +296,11 @@ preproc_filterpat (pat, text)
    a new STRINGLIST with the matching members of SL *copied*.  Any
    non-matching members of SL->list are *freed*. */   
 STRINGLIST *
-filter_stringlist (sl, filterpat, text)
-     STRINGLIST *sl;
-     char *filterpat;
-     const char *text;
+filter_stringlist (
+     STRINGLIST *sl,
+     char *filterpat,
+     const char *text
+)
 {
   int i, m, not;
   STRINGLIST *ret;
@@ -332,8 +339,9 @@ filter_stringlist (sl, filterpat, text)
    This understands how rl_completion_matches sets matches[0] (the lcd of the
    strings in the list, unless it's the only match). */
 STRINGLIST *
-completions_to_stringlist (matches)
-     char **matches;
+completions_to_stringlist (
+     char **matches
+)
 {
   STRINGLIST *sl;
   int mlen, i, n;
@@ -363,8 +371,9 @@ completions_to_stringlist (matches)
    The caller is responsible for setting ITP->flags correctly. */
 
 static int
-it_init_aliases (itp)
-     ITEMLIST *itp;
+it_init_aliases (
+     ITEMLIST *itp
+)
 {
 #ifdef ALIAS
   alias_t **alias_list;
@@ -393,9 +402,10 @@ it_init_aliases (itp)
 }
 
 static void
-init_itemlist_from_varlist (itp, svfunc)
-     ITEMLIST *itp;
-     SVFUNC *svfunc;
+init_itemlist_from_varlist (
+     ITEMLIST *itp,
+     SVFUNC *svfunc
+)
 {
   SHELL_VAR **vlist;
   STRINGLIST *sl;
@@ -417,8 +427,9 @@ init_itemlist_from_varlist (itp, svfunc)
 }
 
 static int
-it_init_arrayvars (itp)
-     ITEMLIST *itp;
+it_init_arrayvars (
+     ITEMLIST *itp
+)
 {
 #if defined (ARRAY_VARS)
   init_itemlist_from_varlist (itp, all_array_variables);
@@ -429,8 +440,9 @@ it_init_arrayvars (itp)
 }
 
 static int
-it_init_bindings (itp)
-     ITEMLIST *itp;
+it_init_bindings (
+     ITEMLIST *itp
+)
 {
   char **blist;
   STRINGLIST *sl;
@@ -448,8 +460,9 @@ it_init_bindings (itp)
 }
 
 static int
-it_init_builtins (itp)
-     ITEMLIST *itp;
+it_init_builtins (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
   register int i, n;
@@ -465,8 +478,9 @@ it_init_builtins (itp)
 }
 
 static int
-it_init_enabled (itp)
-     ITEMLIST *itp;
+it_init_enabled (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
   register int i, n;
@@ -484,8 +498,9 @@ it_init_enabled (itp)
 }
 
 static int
-it_init_disabled (itp)
-     ITEMLIST *itp;
+it_init_disabled (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
   register int i, n;
@@ -503,16 +518,18 @@ it_init_disabled (itp)
 }
 
 static int
-it_init_exported (itp)
-     ITEMLIST *itp;
+it_init_exported (
+     ITEMLIST *itp
+)
 {
   init_itemlist_from_varlist (itp, all_exported_variables);
   return 0;
 }
 
 static int
-it_init_functions (itp)
-     ITEMLIST *itp;
+it_init_functions (
+     ITEMLIST *itp
+)
 {
   init_itemlist_from_varlist (itp, all_visible_functions);
   return 0;
@@ -521,8 +538,9 @@ it_init_functions (itp)
 /* Like it_init_builtins, but includes everything the help builtin looks at,
    not just builtins with an active implementing function. */
 static int
-it_init_helptopics (itp)
-     ITEMLIST *itp;
+it_init_helptopics (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
   register int i, n;
@@ -537,8 +555,9 @@ it_init_helptopics (itp)
 }
 
 static int
-it_init_hostnames (itp)
-     ITEMLIST *itp;
+it_init_hostnames (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
 
@@ -552,9 +571,10 @@ it_init_hostnames (itp)
 }
 
 static int
-it_init_joblist (itp, jstate)
-     ITEMLIST *itp;
-     int jstate;
+it_init_joblist (
+     ITEMLIST *itp,
+     int jstate
+)
 {
 #if defined (JOB_CONTROL)
   STRINGLIST *sl;
@@ -594,29 +614,33 @@ it_init_joblist (itp, jstate)
 }
 
 static int
-it_init_jobs (itp)
-     ITEMLIST *itp;
+it_init_jobs (
+     ITEMLIST *itp
+)
 {
   return (it_init_joblist (itp, -1));
 }
 
 static int
-it_init_running (itp)
-     ITEMLIST *itp;
+it_init_running (
+     ITEMLIST *itp
+)
 {
   return (it_init_joblist (itp, 0));
 }
 
 static int
-it_init_stopped (itp)
-     ITEMLIST *itp;
+it_init_stopped (
+     ITEMLIST *itp
+)
 {
   return (it_init_joblist (itp, 1));
 }
 
 static int
-it_init_keywords (itp)
-     ITEMLIST *itp;
+it_init_keywords (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
   register int i, n;
@@ -633,8 +657,9 @@ it_init_keywords (itp)
 }
 
 static int
-it_init_signals (itp)
-     ITEMLIST *itp;
+it_init_signals (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
 
@@ -647,16 +672,18 @@ it_init_signals (itp)
 }
 
 static int
-it_init_variables (itp)
-     ITEMLIST *itp;
+it_init_variables (
+     ITEMLIST *itp
+)
 {
   init_itemlist_from_varlist (itp, all_visible_variables);
   return 0;
 }
 
 static int
-it_init_setopts (itp)
-     ITEMLIST *itp;
+it_init_setopts (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
 
@@ -669,8 +696,9 @@ it_init_setopts (itp)
 }
 
 static int
-it_init_shopts (itp)
-     ITEMLIST *itp;
+it_init_shopts (
+     ITEMLIST *itp
+)
 {
   STRINGLIST *sl;
 
@@ -688,9 +716,10 @@ it_init_shopts (itp)
    new one before trying the match.  TEXT is dequoted before attempting a
    match. */
 static STRINGLIST *
-gen_matches_from_itemlist (itp, text)
-     ITEMLIST *itp;
-     const char *text;
+gen_matches_from_itemlist (
+     ITEMLIST *itp,
+     const char *text
+)
 {
   STRINGLIST *ret, *sl;
   int tlen, i, n;
@@ -726,9 +755,10 @@ gen_matches_from_itemlist (itp, text)
 /* A wrapper for rl_filename_completion_function that dequotes the filename
    before attempting completions. */
 static char *
-pcomp_filename_completion_function (text, state)
-     const char *text;
-     int state;
+pcomp_filename_completion_function (
+     const char *text,
+     int state
+)
 {
   static char *dfn;	/* dequoted filename */
   int iscompgen, iscompleting;
@@ -822,9 +852,10 @@ pcomp_filename_completion_function (text, state)
 /* Functions to generate lists of matches from the actions member of CS. */
 
 static STRINGLIST *
-gen_action_completions (cs, text)
-     COMPSPEC *cs;
-     const char *text;
+gen_action_completions (
+     COMPSPEC *cs,
+     const char *text
+)
 {
   STRINGLIST *ret, *tmatches;
   char **cmatches;	/* from rl_completion_matches ... */
@@ -886,9 +917,10 @@ gen_action_completions (cs, text)
    to use TEXT, we should call quote_string_for_globbing before the call to
    glob_filename. */
 static STRINGLIST *
-gen_globpat_matches (cs, text)
-      COMPSPEC *cs;
-      const char *text;
+gen_globpat_matches (
+      COMPSPEC *cs,
+      const char *text
+)
 {
   STRINGLIST *sl;
 
@@ -904,9 +936,10 @@ gen_globpat_matches (cs, text)
 /* Perform the shell word expansions on CS->words and return the results.
    Again, this ignores TEXT. */
 static STRINGLIST *
-gen_wordlist_matches (cs, text)
-     COMPSPEC *cs;
-     const char *text;
+gen_wordlist_matches (
+     COMPSPEC *cs,
+     const char *text
+)
 {
   WORD_LIST *l, *l2;
   STRINGLIST *sl;
@@ -930,7 +963,7 @@ gen_wordlist_matches (cs, text)
   l2 = expand_words_shellexp (l);
   dispose_words (l);
 
-  nw = list_length (l2);
+  nw = list_length ((GENERIC_LIST *)l2);
   sl = strlist_create (nw + 1);
 
   ntxt = bash_dequote_text (text);
@@ -951,8 +984,9 @@ gen_wordlist_matches (cs, text)
 #ifdef ARRAY_VARS
 
 static SHELL_VAR *
-bind_comp_words (lwords)
-     WORD_LIST *lwords;
+bind_comp_words (
+     WORD_LIST *lwords
+)
 {
   SHELL_VAR *v;
 
@@ -975,11 +1009,13 @@ bind_comp_words (lwords)
 #endif /* ARRAY_VARS */
 
 static void
-bind_compfunc_variables (line, ind, lwords, cw, exported)
-     char *line;
-     int ind;
-     WORD_LIST *lwords;
-     int cw, exported;
+bind_compfunc_variables (
+     char *line,
+     int ind,
+     WORD_LIST *lwords,
+     int cw,
+     int exported
+)
 {
   char ibuf[INT_STRLEN_BOUND(int) + 1];
   char *value;
@@ -1028,8 +1064,9 @@ bind_compfunc_variables (line, ind, lwords, cw, exported)
 }
 
 static void
-unbind_compfunc_variables (exported)
-     int exported;
+unbind_compfunc_variables (
+     int exported
+)
 {
   unbind_variable_noref ("COMP_LINE");
   unbind_variable_noref ("COMP_POINT");
@@ -1056,12 +1093,13 @@ unbind_compfunc_variables (exported)
    make do with the COMP_LINE and COMP_POINT variables. */
 
 static WORD_LIST *
-build_arg_list (cmd, cname, text, lwords, ind)
-     char *cmd;
-     const char *cname;
-     const char *text;
-     WORD_LIST *lwords;
-     int ind;
+build_arg_list (
+     char *cmd,
+     const char *cname,
+     const char *text,
+     WORD_LIST *lwords,
+     int ind
+)
 {
   WORD_LIST *ret, *cl, *l;
   WORD_DESC *w;
@@ -1100,15 +1138,17 @@ build_arg_list (cmd, cname, text, lwords, ind)
    variable, this does nothing if arrays are not compiled into the shell. */
 
 static STRINGLIST *
-gen_shell_function_matches (cs, cmd, text, line, ind, lwords, nw, cw, foundp)
-     COMPSPEC *cs;
-     const char *cmd;
-     const char *text;
-     char *line;
-     int ind;
-     WORD_LIST *lwords;
-     int nw, cw;
-     int *foundp;
+gen_shell_function_matches (
+     COMPSPEC *cs,
+     const char *cmd,
+     const char *text,
+     char *line,
+     int ind,
+     WORD_LIST *lwords,
+     int nw,
+     int cw,
+     int *foundp
+)
 {
   char *funcname;
   STRINGLIST *sl;
@@ -1205,14 +1245,16 @@ gen_shell_function_matches (cs, cmd, text, line, ind, lwords, nw, cw, foundp)
    STRINGLIST from the results and return it. */
 
 static STRINGLIST *
-gen_command_matches (cs, cmd, text, line, ind, lwords, nw, cw)
-     COMPSPEC *cs;
-     const char *cmd;
-     const char *text;
-     char *line;
-     int ind;
-     WORD_LIST *lwords;
-     int nw, cw;
+gen_command_matches (
+     COMPSPEC *cs,
+     const char *cmd,
+     const char *text,
+     char *line,
+     int ind,
+     WORD_LIST *lwords,
+     int nw, 
+     int cw
+)
 {
   char *csbuf, *cscmd, *t;
   int cmdlen, cmdsize, n, ws, we;
@@ -1291,9 +1333,13 @@ gen_command_matches (cs, cmd, text, line, ind, lwords, nw, cw)
 }
 
 static WORD_LIST *
-command_line_to_word_list (line, llen, sentinel, nwp, cwp)
-     char *line;
-     int llen, sentinel, *nwp, *cwp;
+command_line_to_word_list (
+     char *line,
+     int llen,
+     int sentinel,
+     int *nwp,
+     int *cwp
+)
 {
   WORD_LIST *ret;
   char *delims;
@@ -1310,12 +1356,14 @@ command_line_to_word_list (line, llen, sentinel, nwp, cwp)
 /* Evaluate COMPSPEC *cs and return all matches for WORD. */
 
 STRINGLIST *
-gen_compspec_completions (cs, cmd, word, start, end, foundp)
-     COMPSPEC *cs;
-     const char *cmd;
-     const char *word;
-     int start, end;
-     int *foundp;
+gen_compspec_completions (
+     COMPSPEC *cs,
+     const char *cmd,
+     const char *word,
+     int start,
+     int end,
+     int *foundp
+)
 {
   STRINGLIST *ret, *tmatches;
   char *line;
@@ -1519,8 +1567,10 @@ gen_compspec_completions (cs, cmd, word, start, end, foundp)
 }
 
 void
-pcomp_set_readline_variables (flags, nval)
-     int flags, nval;
+pcomp_set_readline_variables (
+     int flags,
+     int nval
+)
 {
   /* If the user specified that the compspec returns filenames, make
      sure that readline knows it. */
@@ -1540,9 +1590,11 @@ pcomp_set_readline_variables (flags, nval)
 /* Set or unset FLAGS in the options word of the current compspec.
    SET_OR_UNSET is 1 for setting, 0 for unsetting. */
 void
-pcomp_set_compspec_options (cs, flags, set_or_unset)
-     COMPSPEC *cs;
-     int flags, set_or_unset;
+pcomp_set_compspec_options (
+     COMPSPEC *cs,
+     int flags,
+     int set_or_unset
+)
 {
   if (cs == 0 && ((cs = pcomp_curcs) == 0))
     return;
@@ -1553,13 +1605,16 @@ pcomp_set_compspec_options (cs, flags, set_or_unset)
 }
 
 static STRINGLIST *
-gen_progcomp_completions (ocmd, cmd, word, start, end, foundp, retryp, lastcs)
-     const char *ocmd;
-     const char *cmd;
-     const char *word;
-     int start, end;
-     int *foundp, *retryp;
-     COMPSPEC **lastcs;
+gen_progcomp_completions (
+     const char *ocmd,
+     const char *cmd,
+     const char *word,
+     int start,
+     int end,
+     int *foundp,
+     int *retryp,
+     COMPSPEC **lastcs
+)
 {
   COMPSPEC *cs, *oldcs;
   const char *oldcmd, *oldtxt;
@@ -1616,10 +1671,13 @@ gen_progcomp_completions (ocmd, cmd, word, start, end, foundp, retryp, lastcs)
    bound the command currently being completed in pcomp_line (usually
    rl_line_buffer). */
 char **
-programmable_completions (cmd, word, start, end, foundp)
-     const char *cmd;
-     const char *word;
-     int start, end, *foundp;
+programmable_completions (
+     const char *cmd,
+     const char *word,
+     int start,
+     int end,
+     int *foundp
+)
 {
   COMPSPEC *lastcs;
   STRINGLIST *ret;

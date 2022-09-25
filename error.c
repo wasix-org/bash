@@ -76,8 +76,9 @@ const char * const the_current_maintainer = MAINTAINER;
 int gnu_error_format = 0;
 
 static void
-error_prolog (print_lineno)
-     int print_lineno;
+error_prolog (
+     int print_lineno
+)
 {
   char *ename;
   int line;
@@ -129,8 +130,9 @@ get_name_for_error ()
    sys_error so the filename is not interpreted as a printf-style
    format string. */
 void
-file_error (filename)
-     const char *filename;
+file_error (
+     const char *filename
+)
 {
   report_error ("%s: %s", filename, strerror (errno));
 }
@@ -139,9 +141,10 @@ void
 #if defined (PREFER_STDARG)
 programming_error (const char *format, ...)
 #else
-programming_error (format, va_alist)
-     const char *format;
-     va_dcl
+programming_error (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -183,9 +186,10 @@ void
 #if defined (PREFER_STDARG)
 report_error (const char *format, ...)
 #else
-report_error (format, va_alist)
-     const char *format;
-     va_dcl
+report_error (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -210,9 +214,10 @@ void
 #if defined (PREFER_STDARG)
 fatal_error (const char *format, ...)
 #else
-fatal_error (format, va_alist)
-     const char *format;
-     va_dcl
+fatal_error (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -232,9 +237,10 @@ void
 #if defined (PREFER_STDARG)
 internal_error (const char *format, ...)
 #else
-internal_error (format, va_alist)
-     const char *format;
-     va_dcl
+internal_error (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -253,9 +259,10 @@ void
 #if defined (PREFER_STDARG)
 internal_warning (const char *format, ...)
 #else
-internal_warning (format, va_alist)
-     const char *format;
-     va_dcl
+internal_warning (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -275,9 +282,10 @@ void
 #if defined (PREFER_STDARG)
 internal_inform (const char *format, ...)
 #else
-internal_inform (format, va_alist)
-     const char *format;
-     va_dcl
+internal_inform (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -298,9 +306,10 @@ void
 #if defined (PREFER_STDARG)
 sys_error (const char *format, ...)
 #else
-sys_error (format, va_alist)
-     const char *format;
-     va_dcl
+sys_error (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   int e;
@@ -329,10 +338,11 @@ void
 #if defined (PREFER_STDARG)
 parser_error (int lineno, const char *format, ...)
 #else
-parser_error (lineno, format, va_alist)
-     int lineno;
-     const char *format;
-     va_dcl
+parser_error (
+     int lineno,
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -364,8 +374,9 @@ parser_error (lineno, format, va_alist)
 #ifdef DEBUG
 /* This assumes ASCII and is suitable only for debugging */
 char *
-strescape (str)
-     const char *str;
+strescape (
+     const char *str
+)
 {
   char *r, *result;
   unsigned char *s;
@@ -396,9 +407,10 @@ void
 #if defined (PREFER_STDARG)
 itrace (const char *format, ...)
 #else
-itrace (format, va_alist)
-     const char *format;
-     va_dcl
+itrace (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -421,9 +433,10 @@ void
 #if defined (PREFER_STDARG)
 trace (const char *format, ...)
 #else
-trace (format, va_alist)
-     const char *format;
-     va_dcl
+trace (
+     const char *format,
+     const char *va_dcl
+)
 #endif
 {
   va_list args;
@@ -467,9 +480,12 @@ static const char * const cmd_error_table[] = {
 };
 
 void
-command_error (func, code, e, flags)
-     const char *func;
-     int code, e, flags;	/* flags currently unused */
+command_error (
+     const char *func,
+     int code,
+     int e,
+     int flags	/* flags currently unused */
+)
 {
   if (code > CMDERR_LAST)
     code = CMDERR_DEFAULT;
@@ -478,8 +494,9 @@ command_error (func, code, e, flags)
 }
 
 char *
-command_errstr (code)
-     int code;
+command_errstr (
+     int code
+)
 {
   if (code > CMDERR_LAST)
     code = CMDERR_DEFAULT;
@@ -489,23 +506,26 @@ command_errstr (code)
 
 #ifdef ARRAY_VARS
 void
-err_badarraysub (s)
-     const char *s;
+err_badarraysub (
+     const char *s
+)
 {
   report_error ("%s: %s", s, _(bash_badsub_errmsg));
 }
 #endif
 
 void
-err_unboundvar (s)
-     const char *s;
+err_unboundvar (
+     const char *s
+)
 {
   report_error (_("%s: unbound variable"), s);
 }
 
 void
-err_readonly (s)
-     const char *s;
+err_readonly (
+     const char *s
+)
 {
   report_error (_("%s: readonly variable"), s);
 }
