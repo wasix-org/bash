@@ -111,10 +111,11 @@ int sh_badopt = 0;
 #define NEEDARG(x) fprintf (stderr, _("%s: option requires an argument -- %c\n"), argv[0], x)
 
 int
-sh_getopt (argc, argv, optstring)
-     int argc;
-     char *const *argv;
-     const char *optstring;
+sh_getopt (
+     int argc,
+     char *const *argv,
+     const char *optstring
+)
 {
   char c, *temp;
 
@@ -216,8 +217,9 @@ sh_getopt (argc, argv, optstring)
 }
 
 void
-sh_getopt_restore_state (argv)
-     char **argv;
+sh_getopt_restore_state (
+     char **argv
+)
 {
   if (nextchar)
     nextchar = argv[sh_curopt] + sh_charindex;
@@ -233,8 +235,9 @@ sh_getopt_alloc_istate ()
 }
 
 void
-sh_getopt_dispose_istate (gs)
-     sh_getopt_state_t *gs;
+sh_getopt_dispose_istate (
+     sh_getopt_state_t *gs
+)
 {
   free (gs);
 }
@@ -257,8 +260,9 @@ sh_getopt_save_istate ()
 }
 
 void
-sh_getopt_restore_istate (state)
-     sh_getopt_state_t *state;
+sh_getopt_restore_istate (
+     sh_getopt_state_t *state
+)
 {
   sh_optarg = state->gs_optarg;
   sh_optind = state->gs_optind;
@@ -288,9 +292,10 @@ sh_getopt_debug_restore_state (argv)
    the above definition of `sh_getopt'.  */
 
 int
-main (argc, argv)
-     int argc;
-     char **argv;
+main (
+     int argc,
+     char **argv
+)
 {
   int c;
   int digit_sh_optind = 0;

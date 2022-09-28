@@ -28,6 +28,7 @@
 #include <unistd.h>
 #endif
 
+#include <signal.h>
 #include <errno.h>
 #if !defined (errno)
 extern int errno;

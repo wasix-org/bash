@@ -15,7 +15,7 @@ MACHTYPE = wasm32-wasmer-wasi
 
 CFLAGS = --target=wasm32-wasmer-wasi \
          -O2 \
-         -include ../config.h \
+         -include ./config.h \
          --sysroot ../wasix-libc/sysroot32 \
          -I. \
          -I./include \
@@ -58,6 +58,9 @@ CFLAGS = --target=wasm32-wasmer-wasi \
          -Wno-unknown-pragmas \
          -Wno-format-security \
          -Wno-unused-label \
+         -Wno-incompatible-pointer-types \
+         -Wno-deprecated-non-prototype \
+         -Wno-deprecated-declarations \
          -MD \
          -MP
 
@@ -104,7 +107,6 @@ SRC = alias \
       locale \
       mailcheck \
       make_cmd \
-      mksyntax \
       nojobs \
       pathexp \
       pcomplete \
@@ -119,20 +121,153 @@ SRC = alias \
       trap \
       unwind_prot \
       variables \
-      xmalloc
+      xmalloc \
+      version \
+      y.tab
 
-OBJS = $(SRC:=.o)
+OBJS = $(SRC:=.o) \
+      builtins/common.o \
+      builtins/evalfile.o \
+      builtins/evalstring.o \
+      builtins/bashgetopt.o \
+      builtins/getopt.o \
+      builtins/alias.o \
+      builtins/bind.o \
+      builtins/break.o \
+      builtins/builtin.o \
+      builtins/builtins.o \
+      builtins/caller.o \
+      builtins/cd.o \
+      builtins/colon.o \
+      builtins/command.o \
+      builtins/complete.o \
+      builtins/declare.o \
+      builtins/echo.o \
+      builtins/enable.o \
+      builtins/eval.o \
+      builtins/exec.o \
+      builtins/exit.o \
+      builtins/fc.o \
+      builtins/fg_bg.o \
+      builtins/getopts.o \
+      builtins/hash.o \
+      builtins/help.o \
+      builtins/history.o \
+      builtins/inlib.o \
+      builtins/jobs.o \
+      builtins/kill.o \
+      builtins/let.o \
+      builtins/mapfile.o \
+      builtins/printf.o \
+      builtins/pushd.o \
+      builtins/read.o \
+      builtins/return.o \
+      builtins/set.o \
+      builtins/setattr.o \
+      builtins/shift.o \
+      builtins/shopt.o \
+      builtins/source.o \
+      builtins/suspend.o \
+      builtins/test.o \
+      builtins/times.o \
+      builtins/trap.o \
+      builtins/type.o \
+      builtins/ulimit.o \
+      builtins/umask.o \
+      builtins/wait.o \
+      lib/sh/casemod.o \
+      lib/sh/clktck.o \
+      lib/sh/clock.o \
+      lib/sh/dprintf.o \
+      lib/sh/eaccess.o \
+      lib/sh/fmtullong.o \
+      lib/sh/fmtulong.o \
+      lib/sh/fmtumax.o \
+      lib/sh/fnxform.o \
+      lib/sh/fpurge.o \
+      lib/sh/getcwd.o \
+      lib/sh/getenv.o \
+      lib/sh/gettimeofday.o \
+      lib/sh/inet_aton.o \
+      lib/sh/input_avail.o \
+      lib/sh/itos.o \
+      lib/sh/mailstat.o \
+      lib/sh/makepath.o \
+      lib/sh/mbscasecmp.o \
+      lib/sh/mbschr.o \
+      lib/sh/mbscmp.o \
+      lib/sh/mktime.o \
+      lib/sh/netconn.o \
+      lib/sh/netopen.o \
+      lib/sh/oslib.o \
+      lib/sh/pathcanon.o \
+      lib/sh/pathphys.o \
+      lib/sh/random.o \
+      lib/sh/rename.o \
+      lib/sh/setlinebuf.o \
+      lib/sh/shmatch.o \
+      lib/sh/shmbchar.o \
+      lib/sh/shquote.o \
+      lib/sh/shtty.o \
+      lib/sh/snprintf.o \
+      lib/sh/spell.o \
+      lib/sh/strcasecmp.o \
+      lib/sh/strcasestr.o \
+      lib/sh/strchrnul.o \
+      lib/sh/strdup.o \
+      lib/sh/strerror.o \
+      lib/sh/strftime.o \
+      lib/sh/stringlist.o \
+      lib/sh/stringvec.o \
+      lib/sh/strnlen.o \
+      lib/sh/strpbrk.o \
+      lib/sh/strstr.o \
+      lib/sh/strtod.o \
+      lib/sh/strtol.o \
+      lib/sh/strtoll.o \
+      lib/sh/strtoul.o \
+      lib/sh/strtoull.o \
+      lib/sh/strtrans.o \
+      lib/sh/times.o \
+      lib/sh/timeval.o \
+      lib/sh/tmpfile.o \
+      lib/sh/uconvert.o \
+      lib/sh/ufuncs.o \
+      lib/sh/unicode.o \
+      lib/sh/utf8.o \
+      lib/sh/vprint.o \
+      lib/sh/wcsdup.o \
+      lib/sh/wcsnwidth.o \
+      lib/sh/wcswidth.o \
+      lib/sh/winsize.o \
+      lib/sh/zcatfd.o \
+      lib/sh/zgetline.o \
+      lib/sh/zmapfd.o \
+      lib/sh/zread.o \
+      lib/sh/zwrite.o
 
 all: shell
+	cp -f shell.wasm /prog/ate/wasmer-web/public/bin/bash.wasm
 
-shell: $(OBJS)
+shell: sh builtins $(OBJS)
 	clang $(CFLAGS) $(CLFLAGS) \
-              $(OBJS) \
+              $@.c $(OBJS) \
               -o $@.rustc.wasm
 	wasm-opt -O2 --asyncify $@.rustc.wasm -o $@.wasm
-	cp -f $@.wasm /prog/ate/wasmer-web/public/bin
 
-%.o: %.c
+builtins:
+	cd builtins && make && cd ../..
+
+sh:
+	cd lib/sh && make && cd ../..
+
+mksyntax: $(OBJS)
+	clang $(CFLAGS) $(CLFLAGS) \
+              $@.c $(OBJS) \
+              -o $@.rustc.wasm
+	wasm-opt -O2 --asyncify $@.rustc.wasm -o $@.wasm
+
+%: %.c
 	clang $(CFLAGS) \
               $@.c \
 			  -c \
@@ -141,6 +276,8 @@ shell: $(OBJS)
 export PATH := $(LLD_PATH):$(PATH)
 
 clean:
+	cd builtins && make clean && cd ..
+	cd lib/sh && make clean && cd ../..
 	rm -f *.o
 	rm -f *.s
 	rm -f *.ll

@@ -33,6 +33,10 @@
 #define _TANDEM_SOURCE 1
 /* #undef _MINIX */
 
+#define HAVE_NETWORK 1
+#define NAMED_PIPES_MISSING 1
+#define WASM 1
+
 /* Configuration feature settings controllable by autoconf. */
 
 /* Define JOB_CONTROL if your operating system supports
@@ -94,7 +98,7 @@
    ability to be a restricted one.  The shell thus generated can become
    restricted by being run with the name "rbash", or by setting the -r
    flag. */
-#define RESTRICTED_SHELL 1
+/* #undef RESTRICTED_SHELL */
 
 /* Define DISABLED_BUILTINS if you want "builtin foo" to always run the
    shell builtin "foo", even if it has been disabled with "enable -n foo". */
@@ -511,11 +515,13 @@
 /* Define if the `getpgrp' function takes no argument.  */
 #define GETPGRP_VOID
 
-#define NAMED_PIPES_MISSING 1
+//#define JOB_CONTROL 1
 
 /* #undef OPENDIR_NOT_ROBUST */
 
 #define PGRP_PIPE 1
+
+#define NO_MAIN_ENV_ARG
 
 /* Define if the setvbuf function takes the buffering type as its second
    argument and the buffer pointer as the third, as on System V
@@ -526,7 +532,7 @@
 
 /* #undef ULIMIT_MAXFDS */
 
-#define CAN_REDEFINE_GETENV 1
+/* #undef CAN_REDEFINE_GETENV */
 
 #define HAVE_STD_PUTENV 1
 
@@ -669,7 +675,7 @@
 /* #undef HAVE_GETPWUID */
 
 /* Define if you have the getrandom function.  */
-/* #undef HAVE_GETRANDOM */
+#define HAVE_GETRANDOM 1
 
 /* Define if you have the getrlimit function.  */
 /* #undef HAVE_GETRLIMIT */
@@ -765,28 +771,28 @@
 #define HAVE_MEMSET 1
 
 /* Define if you have the mkdtemp function.  */
-/* #undef HAVE_MKDTEMP */
+#define HAVE_MKDTEMP 1
 
 /* Define if you have the mkfifo function.  */
-/* #undef HAVE_MKFIFO */
+#define HAVE_MKFIFO 1
 
 /* Define if you have the mkstemp function.  */
-/* #undef HAVE_MKSTEMP */
+#define HAVE_MKSTEMP 1
 
 /* Define if you have the pathconf function. */
 /* #undef HAVE_PATHCONF */
 
 /* Define if you have the pselect function.  */
-/* #undef HAVE_PSELECT */
+#define HAVE_PSELECT 1
 
 /* Define if you have the putenv function.  */
-/* #undef HAVE_PUTENV */
+#define HAVE_PUTENV 1
 
 /* Define if you have the raise function. */
-/* #undef HAVE_RAISE */
+#define HAVE_RAISE 1
 
 /* Define if you have the random function. */
-/* #undef HAVE_RANDOM */
+#define HAVE_RANDOM  1
 
 /* Define if you have the readlink function. */
 /* #undef HAVE_READLINK */
@@ -798,7 +804,7 @@
 #define HAVE_REGEXEC 1
 
 /* Define if you have the rename function. */
-/* #undef HAVE_RENAME */
+#define HAVE_RENAME 1
 
 /* Define if you have the sbrk function. */
 #define HAVE_SBRK 1
@@ -810,7 +816,7 @@
 /* #undef HAVE_SETDTABLESIZE */
 
 /* Define if you have the setenv function.  */
-/* #undef HAVE_SETENV */
+#define HAVE_SETENV 1
 
 /* Define if you have the setitimer function.  */
 /* #undef HAVE_SETITIMER */
@@ -879,22 +885,22 @@
 #define HAVE_STRSTR 1
 
 /* Define if you have the strtod function. */
-/* #undef HAVE_STRTOD */
+#define HAVE_STRTOD 1
 
 /* Define if you have the strtoimax function. */
 #define HAVE_STRTOIMAX 1
 
 /* Define if you have the strtol function. */
-/* #undef HAVE_STRTOL */
+#define HAVE_STRTOL 1
 
 /* Define if you have the strtoll function. */
-/* #undef HAVE_STRTOLL */
+#define HAVE_STRTOLL 1
 
 /* Define if you have the strtoul function. */
-/* #undef HAVE_STRTOUL */
+#define HAVE_STRTOUL 1
 
 /* Define if you have the strtoull function. */
-/* #undef HAVE_STRTOULL */
+#define HAVE_STRTOULL 1
 
 /* Define if you have the strtoumax function. */
 #define HAVE_STRTOUMAX 1
@@ -924,7 +930,7 @@
 #define HAVE_TOWUPPER 1
 
 /* Define if you have the ttyname function.  */
-/* #undef HAVE_TTYNAME */
+#define HAVE_TTYNAME 1
 
 /* Define if you have the tzset function. */
 /* #undef HAVE_TZSET */
@@ -948,7 +954,7 @@
 #define HAVE_VSNPRINTF 0
 
 /* Define if you have the waitpid function. */
-/* #undef HAVE_WAITPID */
+#define HAVE_WAITPID 1
 
 /* Define if you have the wait3 function.  */
 /* #undef HAVE_WAIT3 */
@@ -998,7 +1004,7 @@
 /* #undef HAVE_LIBAUDIT_H */
 
 /* Define if you have the <libintl.h> header file. */
-/* #undef HAVE_LIBINTL_H */
+#define HAVE_LIBINTL_H 1
 
 /* Define if you have the <limits.h> header file.  */
 #define HAVE_LIMITS_H 1
@@ -1191,7 +1197,7 @@
 #define HAVE_STDIO_EXT_H 1
 
 /* Define if you have the `dcgettext' function. */
-/* #undef HAVE_DCGETTEXT */
+#define HAVE_DCGETTEXT 1
 
 /* Define if you have the `localeconv' function. */
 #define HAVE_LOCALECONV 1

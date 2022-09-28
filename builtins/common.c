@@ -103,9 +103,10 @@ void
 #if defined (PREFER_STDARG)
 builtin_error (const char *format, ...)
 #else
-builtin_error (format, va_alist)
-     const char *format;
+builtin_error (
+     const char *format,
      va_dcl
+)
 #endif
 {
   va_list args;
@@ -123,9 +124,10 @@ void
 #if defined (PREFER_STDARG)
 builtin_warning (const char *format, ...)
 #else
-builtin_warning (format, va_alist)
-     const char *format;
+builtin_warning (
+     const char *format,
      va_dcl
+)
 #endif
 {
   va_list args;
@@ -153,8 +155,9 @@ builtin_usage ()
 /* Return if LIST is NULL else barf and jump to top_level.  Used by some
    builtins that do not accept arguments. */
 void
-no_args (list)
-     WORD_LIST *list;
+no_args (
+     WORD_LIST *list
+)
 {
   if (list)
     {
@@ -167,8 +170,9 @@ no_args (list)
 /* Check that no options were given to the currently-executing builtin,
    and return 0 if there were options. */
 int
-no_options (list)
-     WORD_LIST *list;
+no_options (
+     WORD_LIST *list
+)
 {
   int opt;
 
@@ -187,22 +191,25 @@ no_options (list)
 }
 
 void
-sh_needarg (s)
-     char *s;
+sh_needarg (
+     char *s
+)
 {
   builtin_error (_("%s: option requires an argument"), s);
 }
 
 void
-sh_neednumarg (s)
-     char *s;
+sh_neednumarg (
+     char *s
+)
 {
   builtin_error (_("%s: numeric argument required"), s);
 }
 
 void
-sh_notfound (s)
-     char *s;
+sh_notfound (
+     char *s
+)
 {
   builtin_error (_("%s: not found"), s);
 }
@@ -210,29 +217,33 @@ sh_notfound (s)
 /* Function called when one of the builtin commands detects an invalid
    option. */
 void
-sh_invalidopt (s)
-     char *s;
+sh_invalidopt (
+     char *s
+)
 {
   builtin_error (_("%s: invalid option"), s);
 }
 
 void
-sh_invalidoptname (s)
-     char *s;
+sh_invalidoptname (
+     char *s
+)
 {
   builtin_error (_("%s: invalid option name"), s);
 }
 
 void
-sh_invalidid (s)
-     char *s;
+sh_invalidid (
+     char *s
+)
 {
   builtin_error (_("`%s': not a valid identifier"), s);
 }
 
 void
-sh_invalidnum (s)
-     char *s;
+sh_invalidnum (
+     char *s
+)
 {
   char *msg;
 
@@ -246,29 +257,34 @@ sh_invalidnum (s)
 }
 
 void
-sh_invalidsig (s)
-     char *s;
+sh_invalidsig (
+     char *s
+)
 {
   builtin_error (_("%s: invalid signal specification"), s);
 }
 
 void
-sh_badpid (s)
-     char *s;
+sh_badpid (
+     char *s
+)
 {
   builtin_error (_("`%s': not a pid or valid job spec"), s);
 }
 
 void
-sh_readonly (s)
-     const char *s;
+sh_readonly (
+     const char *s
+)
 {
   builtin_error (_("%s: readonly variable"), s);
 }
 
 void
-sh_erange (s, desc)
-     char *s, *desc;
+sh_erange (
+     char *s,
+     char *desc
+)
 {
   if (s)
     builtin_error (_("%s: %s out of range"), s, desc ? desc : _("argument"));
@@ -278,15 +294,17 @@ sh_erange (s, desc)
 
 #if defined (JOB_CONTROL)
 void
-sh_badjob (s)
-     char *s;
+sh_badjob (
+     char *s
+)
 {
   builtin_error (_("%s: no such job"), s);
 }
 
 void
-sh_nojobs (s)
-     char *s;
+sh_nojobs (
+     char *s
+)
 {
   if (s)
     builtin_error (_("%s: no job control"), s);
@@ -297,8 +315,9 @@ sh_nojobs (s)
 
 #if defined (RESTRICTED_SHELL)
 void
-sh_restricted (s)
-     char *s;
+sh_restricted (
+     char *s
+)
 {
   if (s)
     builtin_error (_("%s: restricted"), s);
@@ -308,8 +327,9 @@ sh_restricted (s)
 #endif
 
 void
-sh_notbuiltin (s)
-     char *s;
+sh_notbuiltin (
+     char *s
+)
 {
   builtin_error (_("%s: not a shell builtin"), s);
 }
@@ -324,8 +344,9 @@ sh_wrerror ()
 }
 
 void
-sh_ttyerror (set)
-     int set;
+sh_ttyerror (
+     int set
+)
 {
   if (set)
     builtin_error (_("error setting terminal attributes: %s"), strerror (errno));
@@ -334,8 +355,9 @@ sh_ttyerror (set)
 }
 
 int
-sh_chkwrite (s)
-     int s;
+sh_chkwrite (
+     int s
+)
 {
   QUIT;
   fflush (stdout);
@@ -360,9 +382,10 @@ sh_chkwrite (s)
    in the list in *IP, if IP is non-null.  A convenience function for
    loadable builtins; also used by `test'. */
 char **
-make_builtin_argv (list, ip)
-     WORD_LIST *list;
-     int *ip;
+make_builtin_argv (
+     WORD_LIST *list,
+     int *ip
+)
 {
   char **argv;
 
@@ -376,9 +399,10 @@ make_builtin_argv (list, ip)
    only discard the ones that are to be replaced.  Set POSPARAM_COUNT
    to the number of args assigned (length of LIST). */
 void
-remember_args (list, destructive)
-     WORD_LIST *list;
-     int destructive;
+remember_args (
+     WORD_LIST *list,
+     int destructive
+)
 {
   register int i;
 
@@ -406,7 +430,7 @@ remember_args (list, destructive)
     {
       dispose_words (rest_of_args);
       rest_of_args = copy_word_list (list);
-      posparam_count += list_length (list);
+      posparam_count += list_length ((GENERIC_LIST*)list);
     }
 
   if (destructive)
@@ -416,8 +440,9 @@ remember_args (list, destructive)
 }
 
 void
-shift_args (times)
-     int times;
+shift_args (
+     int times
+)
 {
   WORD_LIST *temp;
   int count;
@@ -508,10 +533,11 @@ set_dollar_vars_changed ()
    current command; if FATAL is 0, return an indication of an invalid
    number by setting *NUMOK == 0 and return -1. */
 int
-get_numeric_arg (list, fatal, count)
-     WORD_LIST *list;
-     int fatal;
-     intmax_t *count;
+get_numeric_arg (
+     WORD_LIST *list,
+     int fatal,
+     intmax_t *count
+)
 {
   char *arg;
 
@@ -545,8 +571,9 @@ get_numeric_arg (list, fatal, count)
 
 /* Get an eight-bit status value from LIST */
 int
-get_exitstat (list)
-     WORD_LIST *list;
+get_exitstat (
+     WORD_LIST *list
+)
 {
   int status;
   intmax_t sval;
@@ -583,8 +610,9 @@ get_exitstat (list)
 /* Return the octal number parsed from STRING, or -1 to indicate
    that the string contained a bad number. */
 int
-read_octal (string)
-     char *string;
+read_octal (
+     char *string
+)
 {
   int result, digits;
 
@@ -614,8 +642,9 @@ read_octal (string)
 char *the_current_working_directory = (char *)NULL;
 
 char *
-get_working_directory (for_whom)
-     char *for_whom;
+get_working_directory (
+     char *for_whom
+)
 {
   if (no_symbolic_links)
     {
@@ -644,8 +673,9 @@ get_working_directory (for_whom)
 
 /* Make NAME our internal idea of the current working directory. */
 void
-set_working_directory (name)
-     char *name;
+set_working_directory (
+     char *name
+)
 {
   FREE (the_current_working_directory);
   the_current_working_directory = savestring (name);
@@ -659,9 +689,10 @@ set_working_directory (name)
 
 #if defined (JOB_CONTROL)
 int
-get_job_by_name (name, flags)
-     const char *name;
-     int flags;
+get_job_by_name (
+     const char *name,
+     int flags
+)
 {
   register int i, wl, cl, match, job;
   register PROCESS *p;
@@ -714,8 +745,9 @@ get_job_by_name (name, flags)
 
 /* Return the job spec found in LIST. */
 int
-get_job_spec (list)
-     WORD_LIST *list;
+get_job_spec (
+     WORD_LIST *list
+)
 {
   register char *word;
   int job, jflags;
@@ -763,9 +795,10 @@ get_job_spec (list)
  * NOTE:  `kill' calls this function with forcecols == 0
  */
 int
-display_signal_list (list, forcecols)
-     WORD_LIST *list;
-     int forcecols;
+display_signal_list (
+     WORD_LIST *list,
+     int forcecols
+)
 {
   register int i, column;
   char *name;
@@ -868,9 +901,10 @@ display_signal_list (list, forcecols)
    Return the address of the builtin.
    DISABLED_OKAY means find it even if the builtin is disabled. */
 struct builtin *
-builtin_address_internal (name, disabled_okay)
-     char *name;
-     int disabled_okay;
+builtin_address_internal (
+     char *name,
+     int disabled_okay
+)
 {
   int hi, lo, mid, j;
 
@@ -908,8 +942,9 @@ builtin_address_internal (name, disabled_okay)
 
 /* Return the pointer to the function implementing builtin command NAME. */
 sh_builtin_func_t *
-find_shell_builtin (name)
-     char *name;
+find_shell_builtin (
+     char *name
+)
 {
   current_builtin = builtin_address_internal (name, 0);
   return (current_builtin ? current_builtin->function : (sh_builtin_func_t *)NULL);
@@ -917,8 +952,9 @@ find_shell_builtin (name)
 
 /* Return the address of builtin with NAME, whether it is enabled or not. */
 sh_builtin_func_t *
-builtin_address (name)
-     char *name;
+builtin_address (
+     char *name
+)
 {
   current_builtin = builtin_address_internal (name, 1);
   return (current_builtin ? current_builtin->function : (sh_builtin_func_t *)NULL);
@@ -927,8 +963,9 @@ builtin_address (name)
 /* Return the function implementing the builtin NAME, but only if it is a
    POSIX.2 special builtin. */
 sh_builtin_func_t *
-find_special_builtin (name)
-     char *name;
+find_special_builtin (
+     char *name
+)
 {
   current_builtin = builtin_address_internal (name, 0);
   return ((current_builtin && (current_builtin->flags & SPECIAL_BUILTIN)) ?
@@ -937,8 +974,10 @@ find_special_builtin (name)
 }
   
 static int
-shell_builtin_compare (sbp1, sbp2)
-     struct builtin *sbp1, *sbp2;
+shell_builtin_compare (
+     struct builtin *sbp1,
+     struct builtin *sbp2
+)
 {
   int result;
 
@@ -972,10 +1011,11 @@ builtin_help ()
 /* **************************************************************** */
 
 SHELL_VAR *
-builtin_bind_variable (name, value, flags)
-     char *name;
-     char *value;
-     int flags;
+builtin_bind_variable (
+     char *name,
+     char *value,
+     int flags
+)
 {
   SHELL_VAR *v;
 
@@ -997,8 +1037,9 @@ builtin_bind_variable (name, value, flags)
 /* Like check_unbind_variable, but for use by builtins (only matters for
    error messages). */
 int
-builtin_unbind_variable (vname)
-     const char *vname;
+builtin_unbind_variable (
+     const char *vname
+)
 {
   SHELL_VAR *v;
 

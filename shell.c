@@ -92,7 +92,7 @@ extern int get_tty_state PARAMS((void));
 #endif
 
 #if !defined (HAVE_GETPW_DECLS)
-extern struct passwd *getpwuid ();
+extern struct passwd *getpwuid (uid_t);
 #endif /* !HAVE_GETPW_DECLS */
 
 #if !defined (errno)
@@ -376,7 +376,7 @@ main (
 #endif
   volatile int locally_skip_execution;
   volatile int arg_index, top_level_arg_index;
-#ifdef __OPENNT
+#if defined(__OPENNT) || defined(WASM)
   char **env;
 
   env = environ;
@@ -874,7 +874,7 @@ parse_long_options (
 
 static int
 parse_shell_options (
-     char **argv;
+     char **argv,
      int arg_start,
      int arg_end
 )

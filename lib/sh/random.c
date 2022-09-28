@@ -31,6 +31,7 @@
 #endif
 #include "filecntl.h"
 
+#include <sys/time.h>
 #include <stdio.h>
 #include "bashansi.h"
 
