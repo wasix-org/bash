@@ -61,16 +61,18 @@ CFLAGS = --target=wasm32-wasmer-wasi \
          -Wno-incompatible-pointer-types \
          -Wno-deprecated-non-prototype \
          -Wno-deprecated-declarations \
+         -Wno-sometimes-uninitialized \
          -MD \
          -MP
 
 #-Wno-deprecated-non-prototype \
          
-CLFLAGS = -Wl,--shared-memory \
+CLFLAGS = -Wl,-error-limit=0 \
+          -Wl,--shared-memory \
           -Wl,--max-memory=4294967296 \
           -Wl,--import-memory \
           -Wl,--export-dynamic \
-		  -Wl,--export=__heap_base \
+	    -Wl,--export=__heap_base \
           -Wl,--export=__stack_pointer \
           -Wl,--export=__data_end \
           -Wl,--export=__wasm_init_tls \
@@ -123,7 +125,8 @@ SRC = alias \
       variables \
       xmalloc \
       version \
-      y.tab
+      y.tab \
+      syntax
 
 OBJS = $(SRC:=.o) \
       builtins/common.o \
@@ -244,12 +247,61 @@ OBJS = $(SRC:=.o) \
       lib/sh/zgetline.o \
       lib/sh/zmapfd.o \
       lib/sh/zread.o \
-      lib/sh/zwrite.o
+      lib/sh/zwrite.o \
+      lib/readline/readline.o \
+      lib/readline/funmap.o \
+      lib/readline/keymaps.o \
+      lib/readline/vi_mode.o \
+      lib/readline/parens.o \
+      lib/readline/rltty.o \
+      lib/readline/complete.o \
+      lib/readline/bind.o \
+      lib/readline/isearch.o \
+      lib/readline/display.o \
+      lib/readline/signals.o \
+      lib/readline/util.o \
+      lib/readline/kill.o \
+      lib/readline/undo.o \
+      lib/readline/macro.o \
+      lib/readline/input.o \
+      lib/readline/callback.o \
+      lib/readline/terminal.o \
+      lib/readline/history.o \
+      lib/readline/histsearch.o \
+      lib/readline/histexpand.o \
+      lib/readline/histfile.o \
+      lib/readline/nls.o \
+      lib/readline/search.o \
+      lib/readline/tilde.o \
+      lib/readline/savestring.o \
+      lib/readline/text.o \
+      lib/readline/misc.o \
+      lib/readline/compat.o \
+      lib/readline/colors.o \
+      lib/readline/parse-colors.o \
+      lib/readline/mbutil.o \
+      lib/glob/glob.o \
+      lib/glob/gmisc.o \
+      lib/glob/smatch.o \
+      lib/glob/strmatch.o \
+      lib/glob/xmbsrtowcs.o \
+      lib/termcap/termcap.o \
+      lib/termcap/tparam.o
+
+#     lib/readline/shell.o \
+#     lib/readline/xmalloc.o \
+#     lib/readline/xfree.o
+
+ #     lib/malloc/malloc.o \
+ #     lib/malloc/trace.o \
+ #     lib/malloc/stats.o \
+ #     lib/malloc/table.o \
+ #     lib/malloc/watch.o
 
 all: shell
 	cp -f shell.wasm /prog/ate/wasmer-web/public/bin/bash.wasm
 
-shell: sh builtins $(OBJS)
+shell: sh builtins glob malloc readline termcap $(OBJS)
 	clang $(CFLAGS) $(CLFLAGS) \
               $@.c $(OBJS) \
               -o $@.rustc.wasm
@@ -260,6 +312,18 @@ builtins:
 
 sh:
 	cd lib/sh && make && cd ../..
+
+glob:
+	cd lib/glob && make && cd ../..
+
+malloc:
+	cd lib/malloc && make && cd ../..
+
+readline:
+	cd lib/readline && make && cd ../..
+
+termcap:
+	cd lib/termcap && make && cd ../..
 
 mksyntax: $(OBJS)
 	clang $(CFLAGS) $(CLFLAGS) \
@@ -278,6 +342,10 @@ export PATH := $(LLD_PATH):$(PATH)
 clean:
 	cd builtins && make clean && cd ..
 	cd lib/sh && make clean && cd ../..
+	cd lib/glob && make clean && cd ../..
+	cd lib/malloc && make clean && cd ../..
+	cd lib/readline && make clean && cd ../..
+	cd lib/termcap && make clean && cd ../..
 	rm -f *.o
 	rm -f *.s
 	rm -f *.ll

@@ -21,8 +21,9 @@ static int INTERNAL_GLOB_PATTERN_P PARAMS((const GCHAR *));
 /* Return nonzero if PATTERN has any special globbing chars in it.
    Compiled twice, once each for single-byte and multibyte characters. */
 static int
-INTERNAL_GLOB_PATTERN_P (pattern)
-     const GCHAR *pattern;
+INTERNAL_GLOB_PATTERN_P (
+     const GCHAR *pattern
+)
 {
   register const GCHAR *p;
   register GCHAR c;

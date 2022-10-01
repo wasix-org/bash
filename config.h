@@ -276,7 +276,7 @@
 /* Memory management functions. */
 
 /* Define if using the bash version of malloc in lib/malloc/malloc.c */
-#define USING_BASH_MALLOC 1
+/* #define USING_BASH_MALLOC 1 */
 
 /* #undef DISABLE_MALLOC_WRAPPERS */
 
@@ -1203,7 +1203,7 @@
 #define HAVE_LOCALECONV 1
 
 /* Define if your system has a working `malloc' function. */
-/* #undef HAVE_MALLOC */
+#define HAVE_MALLOC 1
 
 /* Define if you have the `mempcpy' function. */
 #define HAVE_MEMPCPY 1
