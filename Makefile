@@ -66,7 +66,6 @@ CFLAGS = --target=wasm32-wasmer-wasi \
          -MP
 
 #-Wno-deprecated-non-prototype \
-         
 CLFLAGS = -Wl,-error-limit=0 \
           -Wl,--shared-memory \
           -Wl,--max-memory=4294967296 \
@@ -299,7 +298,7 @@ OBJS = $(SRC:=.o) \
  #     lib/malloc/watch.o
 
 all: shell
-	cp -f shell.wasm /prog/ate/wasmer-web/public/bin/bash.wasm
+	cp -f shell.wasm /prog/packages/bash/bash.wasm
 
 shell: sh builtins glob malloc readline termcap $(OBJS)
 	clang $(CFLAGS) $(CLFLAGS) \

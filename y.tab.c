@@ -1669,6 +1669,9 @@ int yynerrs;
 int
 yyparse (void)
 {
+#ifdef DEBUG
+    //debug_parser(1);
+#endif
     yy_state_fast_t yystate;
     /* Number of tokens to shift before error messages enabled.  */
     int yyerrstatus;

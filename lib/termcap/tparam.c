@@ -329,7 +329,9 @@ tparam1 (string, outstring, len, up, left, argp)
 
 #ifdef DEBUG
 
-main (argc, argv)
+#include <stdio.h>
+
+int main (argc, argv)
      int argc;
      char **argv;
 {
@@ -338,7 +340,7 @@ main (argc, argv)
   args[0] = atoi (argv[2]);
   args[1] = atoi (argv[3]);
   args[2] = atoi (argv[4]);
-  tparam1 (argv[1], buf, "LEFT", "UP", args);
+  tparam1 (argv[1], buf, 50, "LEFT", "UP", args);
   printf ("%s\n", buf);
   return 0;
 }

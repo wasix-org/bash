@@ -36,6 +36,7 @@
 #define HAVE_NETWORK 1
 #define NAMED_PIPES_MISSING 1
 #define WASM 1
+//#define DEBUG 1
 
 /* Configuration feature settings controllable by autoconf. */
 
@@ -1037,7 +1038,7 @@
 #define HAVE_STDARG_H 1
 
 /* Define if you have the <string.h> header file.  */
-#define HAVE_STRING_H 1
+#define HAVE_STRING_H 1  
 
 /* Define if you have the <strings.h> header file.  */
 #define HAVE_STRINGS_H 1

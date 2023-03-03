@@ -2593,7 +2593,7 @@ set_tty_state ()
 #if defined (TERMIOS_TTY_DRIVER)
       if (tcsetattr (tty, TCSADRAIN, &shell_tty_info) < 0)
 	{
-	  /* Only print an error message if we're really interactive at
+    /* Only print an error message if we're really interactive at
 	     this time. */
 	  if (interactive)
 	    sys_error ("[%ld: %d (%d)] tcsetattr", (long)getpid (), shell_level, tty);

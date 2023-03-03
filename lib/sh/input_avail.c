@@ -33,10 +33,6 @@
 #  include <sys/file.h>
 #endif /* HAVE_SYS_FILE_H */
 
-#if defined (HAVE_PSELECT)
-#  include <signal.h>
-#endif
-
 #if defined (HAVE_UNISTD_H)
 #  include <unistd.h>
 #endif /* HAVE_UNISTD_H */
@@ -51,6 +47,10 @@
 
 #include <stdio.h>
 #include <errno.h>
+
+#if defined (HAVE_SELECT) || defined (HAVE_PSELECT)
+#  include <signal.h>
+#endif
 
 #if !defined (errno)
 extern int errno;
@@ -110,7 +110,7 @@ nchars_avail (fd, nchars)
 #if defined(HAVE_SELECT)
   fd_set readfds, exceptfds;
 #endif
-#if defined (HAVE_PSELECT)
+#if defined (HAVE_SELECT) || defined (HAVE_PSELECT)
   sigset_t set, oset;
 #endif
 
