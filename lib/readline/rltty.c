@@ -83,7 +83,7 @@ static void
 set_winsize (tty)
      int tty;
 {
-#if defined (TIOCGWINSZ)
+#if defined (TIOCGWINSZ) && !defined(__wasi__)
   struct winsize w;
 
   if (ioctl (tty, TIOCGWINSZ, &w) == 0)

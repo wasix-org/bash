@@ -22,6 +22,7 @@ CFLAGS = --target=wasm32-wasmer-wasi \
          -I../.. \
          -I../../include \
          -I../../lib \
+         -I../../lib/termcap \
          -matomics \
          -mbulk-memory \
          -mmutable-globals \
@@ -35,6 +36,7 @@ CFLAGS = --target=wasm32-wasmer-wasi \
          -DCONF_OSTYPE='"$(OS)"' \
          -DCONF_MACHTYPE='"$(MACHTYPE)"' \
          -DCONF_VENDOR='"$(VENDOR)"' \
+         -DNEED_EXTERN_PC \
          -D_WASI_EMULATED_MMAN \
          -D_WASI_EMULATED_SIGNAL \
          -D_WASI_EMULATED_PROCESS_CLOCKS \
@@ -62,86 +64,17 @@ CFLAGS = --target=wasm32-wasmer-wasi \
          -Wno-unused-label \
          -Wno-incompatible-pointer-types \
          -Wno-deprecated-non-prototype \
-         -Wno-deprecated-declarations \
+         -Wno-sometimes-uninitialized \
          -MD \
          -MP
 
-#SRC=$(wildcard *.c)
-      
-SRC = casemod \
-      clktck \
-      clock \
-      dprintf \
-      eaccess \
-      fmtullong \
-      fmtulong \
-      fmtumax \
-      fnxform \
-      fpurge \
-      getcwd \
-      getenv \
-      gettimeofday \
-      inet_aton \
-      input_avail \
-      itos \
-      mailstat \
-      makepath \
-      mbscasecmp \
-      mbschr \
-      mbscmp \
-      mktime \
-      netconn \
-      netopen \
-      oslib \
-      pathcanon \
-      pathphys \
-      random \
-      rename \
-      setlinebuf \
-      shmatch \
-      shmbchar \
-      shquote \
-      shtty \
-      snprintf \
-      spell \
-      strcasecmp \
-      strcasestr \
-      strchrnul \
-      strdup \
-      strerror \
-      strftime \
-      stringlist \
-      stringvec \
-      strnlen \
-      strpbrk \
-      strstr \
-      strtod \
-      strtol \
-      strtoll \
-      strtoul \
-      strtoull \
-      strtrans \
-      times \
-      timeval \
-      tmpfile \
-      uconvert \
-      ufuncs \
-      unicode \
-      utf8 \
-      vprint \
-      wcsdup \
-      wcsnwidth \
-      wcswidth \
-      winsize \
-      zcatfd \
-      zgetline \
-      zmapfd \
-      zread \
-      zwrite
+SRC = termcap \
+	  tparam \
+	  version
 
 OBJS = $(SRC:=.o)
 
-all: $(OBJS)
+all: ${OBJS}
 
 %: %.c
 	$(CC) $(CFLAGS) \

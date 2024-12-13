@@ -1,4 +1,4 @@
-CC=clang
+CC=clang-15
 LLD_PATH=/prog/rust/build/x86_64-unknown-linux-gnu/lld/bin
 
 PACKAGE = bash
@@ -111,7 +111,7 @@ OBJS = $(SRC:=.o)
 all: ${OBJS}
 
 %: %.c
-	clang $(CFLAGS) \
+	$(CC) $(CFLAGS) \
               $@.c \
 			  -c \
               -o $@.o

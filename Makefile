@@ -1,4 +1,4 @@
-CC=clang
+CC=clang-16
 LLD_PATH=/prog/rust/build/x86_64-unknown-linux-gnu/lld/bin
 
 PACKAGE = bash
@@ -71,7 +71,7 @@ CLFLAGS = -Wl,-error-limit=0 \
           -Wl,--max-memory=4294967296 \
           -Wl,--import-memory \
           -Wl,--export-dynamic \
-	    -Wl,--export=__heap_base \
+          -Wl,--export=__heap_base \
           -Wl,--export=__stack_pointer \
           -Wl,--export=__data_end \
           -Wl,--export=__wasm_init_tls \
@@ -298,11 +298,15 @@ OBJS = $(SRC:=.o) \
  #     lib/malloc/watch.o
 
 all: shell
-	cp -f shell.wasm /prog/packages/bash/bash.wasm
+	cp -f shell.wasm bash.wasm
 
 shell: sh builtins glob malloc readline termcap $(OBJS)
-	clang $(CFLAGS) $(CLFLAGS) \
+	$(CC) $(CFLAGS) $(CLFLAGS) \
               $@.c $(OBJS) \
+              -Wl,--shared-memory -Wl,--max-memory=4294967296 -Wl,--import-memory -Wl,--export-dynamic \
+    -Wl,--export=__heap_base -Wl,--export=__stack_pointer -Wl,--export=__data_end -Wl,--export=__wasm_init_tls \
+    -Wl,--export=__wasm_signal -Wl,--export=__tls_size -Wl,--export=__tls_align -Wl,--export=__tls_base \
+    -lwasi-emulated-mman -flto -g -Wl,-z,stack-size=8388608 -Wl,--error-limit=0 \
               -o $@.rustc.wasm
 	wasm-opt -O2 --asyncify $@.rustc.wasm -o $@.wasm
 
@@ -325,13 +329,13 @@ termcap:
 	cd lib/termcap && make && cd ../..
 
 mksyntax: $(OBJS)
-	clang $(CFLAGS) $(CLFLAGS) \
+	$(CC) $(CLFLAGS) \
               $@.c $(OBJS) \
               -o $@.rustc.wasm
 	wasm-opt -O2 --asyncify $@.rustc.wasm -o $@.wasm
 
 %: %.c
-	clang $(CFLAGS) \
+	$(CC) $(CFLAGS) \
               $@.c \
 			  -c \
               -o $@.o

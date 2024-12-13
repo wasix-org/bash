@@ -1,0 +1,25 @@
+[package]
+name = "amin/bash"
+version = "1.0.19"
+description = "Bash is a modern POSIX-compliant implementation of /bin/sh."
+license = "GNU"
+wasmer-extra-flags = "--enable-threads --enable-bulk-memory"
+
+[dependencies]
+"amin/coreutils" = "1.0.19"
+
+[[module]]
+name = "bash"
+source = "bash.wasm"
+abi = "wasi"
+
+[[command]]
+name = "bash"
+module = "bash"
+runner = "wasi@unstable_"
+
+[[command]]
+name = "sh"
+module = "bash"
+runner = "wasi@unstable_"
+

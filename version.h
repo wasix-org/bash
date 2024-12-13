@@ -1,0 +1,4 @@
+#define DEFAULT_COMPAT_LEVEL 1
+#define DISTVERSION "dist"
+#define BUILDVERSION 1
+#define SCCSVERSION "scc"

@@ -77,7 +77,7 @@ get_new_window_size (from_sig, rp, cp)
      int from_sig;
      int *rp, *cp;
 {
-#if defined (TIOCGWINSZ)
+#if defined (TIOCGWINSZ) && !defined(__wasi__)
   struct winsize win;
   int tty;
 
