@@ -1,4 +1,4 @@
-CC=clang-16
+CC=clang-19
 LLD_PATH=/prog/rust/build/x86_64-unknown-linux-gnu/lld/bin
 
 PACKAGE = bash
@@ -35,7 +35,7 @@ CFLAGS = --target=wasm32-wasmer-wasi \
          -DCONF_VENDOR='"$(VENDOR)"' \
          -D_WASI_EMULATED_MMAN \
          -D_WASI_EMULATED_SIGNAL \
-		 -D_WASI_EMULATED_PROCESS_CLOCKS \
+         -D_WASI_EMULATED_PROCESS_CLOCKS \
          -Wall \
          -Wextra \
          -Werror \
@@ -62,6 +62,7 @@ CFLAGS = --target=wasm32-wasmer-wasi \
          -Wno-deprecated-non-prototype \
          -Wno-deprecated-declarations \
          -Wno-sometimes-uninitialized \
+         -Wno-cast-function-type-mismatch \
          -MD \
          -MP
 
@@ -308,7 +309,7 @@ shell: sh builtins glob malloc readline termcap $(OBJS)
     -Wl,--export=__wasm_signal -Wl,--export=__tls_size -Wl,--export=__tls_align -Wl,--export=__tls_base \
     -lwasi-emulated-mman -flto -g -Wl,-z,stack-size=8388608 -Wl,--error-limit=0 \
               -o $@.rustc.wasm
-	wasm-opt -O2 --asyncify $@.rustc.wasm -o $@.wasm
+	wasm-opt -O2 --asyncify --fpcast-emu $@.rustc.wasm -o $@.wasm
 
 builtins:
 	cd builtins && make && cd ../..

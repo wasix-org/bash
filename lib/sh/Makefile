@@ -1,4 +1,4 @@
-CC=clang-15
+CC=clang-19
 LLD_PATH=/prog/rust/build/x86_64-unknown-linux-gnu/lld/bin
 
 PACKAGE = bash
