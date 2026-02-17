@@ -1,6 +1,6 @@
 [package]
 name = "wasmer/bash"
-version = "1.0.23"
+version = "1.0.25"
 description = "Bash is a modern POSIX-compliant implementation of /bin/sh."
 license = "GNU"
 wasmer-extra-flags = "--enable-threads --enable-bulk-memory"
